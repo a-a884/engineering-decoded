@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Your Fit — Engineering Decoded</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #2D6A4F;
+    --green-light: #EAF3EC;
+    --green-mid: #74B89A;
+    --green-dark: #1B4332;
+    --text: #1a1a18;
+    --text-muted: #5F5E5A;
+    --text-faint: #888780;
+    --bg: #fafaf8;
+    --bg-card: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.14);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+  }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--text); text-decoration: none; }
+  .logo span { color: var(--green); }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--text); font-weight: 500; }
+
+  /* PAGE HEADER */
+  .page-header {
+    padding: 4.5rem 3rem 3rem;
+    max-width: 680px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .page-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--green); background: var(--green-light);
+    padding: 0.3rem 0.8rem; border-radius: 20px;
+    margin-bottom: 1.25rem;
+  }
+  .page-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15; letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .page-header h1 em { font-style: italic; color: var(--green); }
+  .page-header p { font-size: 1rem; color: var(--text-muted); max-width: 520px; line-height: 1.75; }
+
+  .divider { height: 1px; background: var(--border); margin: 0 3rem 3rem; }
+
+  /* QUIZ WRAPPER */
+  .quiz-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 3rem 5rem;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .progress-bar-track {
+    flex: 1; height: 4px; background: var(--border);
+    border-radius: 4px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: var(--green);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    font-size: 12px; color: var(--text-faint); white-space: nowrap;
+  }
+
+  /* QUESTION CARD */
+  .question-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem 2.25rem;
+    display: none;
+    animation: fadeUp 0.35s ease both;
+  }
+  .question-card.active { display: block; }
+
+  .q-section-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--text-faint); margin-bottom: 0.6rem;
+  }
+
+  .q-number {
+    font-size: 12px; color: var(--text-faint); margin-bottom: 0.35rem;
+  }
+
+  .q-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem; font-weight: 400;
+    line-height: 1.3; letter-spacing: -0.01em;
+    color: var(--text); margin-bottom: 1.5rem;
+  }
+
+  /* OPTIONS */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+  .options-grid.single-col { grid-template-columns: 1fr; }
+
+  .option-btn {
+    background: var(--bg);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+  .option-btn:hover {
+    border-color: var(--green-mid);
+    background: var(--green-light);
+  }
+  .option-btn.selected {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
+  .option-btn.selected .opt-radio { background: var(--green); border-color: var(--green); }
+  .option-btn.selected .opt-radio::after { display: block; }
+
+  .opt-radio {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 1.5px solid var(--border-strong);
+    flex-shrink: 0; margin-top: 3px;
+    position: relative; transition: all 0.15s;
+  }
+  .opt-radio::after {
+    content: '';
+    display: none;
+    width: 6px; height: 6px;
+    background: #fff; border-radius: 50%;
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .opt-text { flex: 1; }
+  .opt-label { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.4; }
+  .opt-sub { font-size: 12px; color: var(--text-muted); margin-top: 0.2rem; line-height: 1.4; }
+
+  /* NAV BUTTONS */
+  .q-nav { display: flex; justify-content: space-between; align-items: center; }
+
+  .btn-back {
+    font-size: 13px; color: var(--text-muted);
+    background: none; border: none; cursor: pointer;
+    padding: 0.5rem 0; transition: color 0.15s;
+  }
+  .btn-back:hover { color: var(--text); }
+  .btn-back:disabled { opacity: 0.3; cursor: default; }
+
+  .btn-next {
+    font-size: 14px; font-weight: 500; color: #fff;
+    background: var(--green); border: none;
+    padding: 0.7rem 1.75rem; border-radius: 8px;
+    cursor: pointer; transition: opacity 0.18s;
+  }
+  .btn-next:hover { opacity: 0.88; }
+  .btn-next:disabled { opacity: 0.35; cursor: default; }
+
+  /* RESULT */
+  .result-card {
+    display: none;
+    animation: fadeUp 0.4s ease both;
+  }
+  .result-card.active { display: block; }
+
+  .result-header {
+    background: #1a1a18;
+    border-radius: 16px;
+    padding: 2.25rem 2.5rem;
+    margin-bottom: 1.25rem;
+    position: relative; overflow: hidden;
+  }
+  .result-header::before {
+    content: '';
+    position: absolute; top: -50px; right: -50px;
+    width: 200px; height: 200px;
+    background: var(--green); border-radius: 50%; opacity: 0.1;
+  }
+
+  .result-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--green-mid); margin-bottom: 0.6rem;
+  }
+
+  .result-branch-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem; font-weight: 400;
+    color: #fff; letter-spacing: -0.02em;
+    line-height: 1.1; margin-bottom: 0.5rem;
+  }
+
+  .result-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+  .result-tagline {
+    font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6;
+  }
+
+  .result-body {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .result-body h3 {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-faint); margin-bottom: 0.75rem;
+  }
+
+  .result-body p {
+    font-size: 14.5px; color: var(--text-muted); line-height: 1.75;
+    margin-bottom: 1.25rem;
+  }
+
+  .result-traits {
+    display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem;
+  }
+  .trait-chip {
+    font-size: 12px; font-weight: 500;
+    padding: 0.25rem 0.75rem; border-radius: 20px;
+    background: var(--green-light); color: var(--green-dark);
+    border: 1px solid var(--green-mid);
+  }
+
+  .result-actions {
+    display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem;
+  }
+
+  .btn-primary {
+    font-size: 14px; font-weight: 500; color: #fff;
+    background: var(--green); border: none;
+    padding: 0.7rem 1.5rem; border-radius: 8px;
+    cursor: pointer; text-decoration: none; transition: opacity 0.18s;
+    display: inline-block;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+
+  .btn-ghost {
+    font-size: 14px; color: var(--text-muted);
+    background: none;
+    border: 1px solid var(--border-strong);
+    padding: 0.7rem 1.5rem; border-radius: 8px;
+    cursor: pointer; transition: all 0.18s;
+  }
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+
+  /* SCORE BAR */
+  .score-bars { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.75rem; }
+  .score-row { display: flex; align-items: center; gap: 0.75rem; }
+  .score-name { font-size: 12px; color: var(--text-muted); width: 130px; flex-shrink: 0; }
+  .score-track { flex: 1; height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .score-fill { height: 100%; border-radius: 4px; background: var(--green); transition: width 0.6s ease; }
+  .score-fill.dim { background: var(--green-mid); opacity: 0.4; }
+  .score-pct { font-size: 12px; color: var(--text-faint); width: 32px; text-align: right; flex-shrink: 0; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 680px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .page-header { padding: 3rem 1.5rem 2rem; }
+    .divider { margin: 0 1.5rem 2rem; }
+    .quiz-wrapper { padding: 0 1.5rem 4rem; }
+    .options-grid { grid-template-columns: 1fr; }
+    .question-card { padding: 1.5rem; }
+    .result-header { padding: 1.75rem; }
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-faint);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Engineering <span>Decoded</span></a>
+  <div class="nav-links">
+    <a href="branches.html">Branches</a>
+    <a href="requirements.html">Requirements</a>
+    <a href="resources.html">Resources</a>
+    <a href="fit.html" class="active">Find your fit</a>
+    <a href="journal.html">My journal</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-tag">🧭 10 questions</div>
+  <h1>Find your <em>engineering fit.</em></h1>
+  <p>Answer 10 questions about what you enjoy and how you like to work. You'll get a branch recommendation with an explanation at the end — no signup, no fluff.</p>
+</div>
+
+<div class="divider"></div>
+
+<div class="quiz-wrapper">
+
+  <!-- PROGRESS -->
+  <div class="progress-bar-wrap" id="progressWrap">
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Question 1 of 10</div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-card active" id="q1">
+    <div class="q-section-label">Subjects</div>
+    <div class="q-number">Question 1 of 10</div>
+    <div class="q-text">Which subject do you enjoy the most right now?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="select(this, 'q1', 'physics')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Physics</div><div class="opt-sub">Forces, motion, energy, waves</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q1', 'chemistry')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Chemistry</div><div class="opt-sub">Reactions, materials, processes</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q1', 'math')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Math</div><div class="opt-sub">Calculus, algebra, logic</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q1', 'coding')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Coding / Computer Science</div><div class="opt-sub">Algorithms, building software</div></div>
+      </button>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" disabled>← Back</button>
+      <button class="btn-next" id="q1-next" disabled onclick="next(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q2">
+    <div class="q-section-label">Subjects</div>
+    <div class="q-number">Question 2 of 10</div>
+    <div class="q-text">Which of these sounds most interesting to study in university?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="select(this, 'q2', 'thermo')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Thermodynamics</div><div class="opt-sub">Heat, energy, engines</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q2', 'structures')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Structural Analysis</div><div class="opt-sub">Why bridges and buildings hold up</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q2', 'circuits')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Circuit Analysis</div><div class="opt-sub">How electrical systems work</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q2', 'reactions')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Chemical Reactions</div><div class="opt-sub">Industrial processes and materials</div></div>
+      </button>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" onclick="back(2)">← Back</button>
+      <button class="btn-next" id="q2-next" disabled onclick="next(2)">Next →</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q3">
+    <div class="q-section-label">Work style</div>
+    <div class="q-number">Question 3 of 10</div>
+    <div class="q-text">Where would you rather spend most of your working day?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="select(this, 'q3', 'workshop')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Workshop or lab</div><div class="opt-sub">Hands-on, building and testing things</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q3', 'outdoor')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Outdoors on site</div><div class="opt-sub">Construction sites, field work</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q3', 'office')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Office with a computer</div><div class="opt-sub">Design, simulation, software</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q3', 'plant')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Industrial plant or factory</div><div class="opt-sub">Managing large-scale processes</div></div>
+      </button>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" onclick="back(3)">← Back</button>
+      <button class="btn-next" id="q3-next" disabled onclick="next(3)">Next →</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q4">
+    <div class="q-section-label">Work style</div>
+    <div class="q-number">Question 4 of 10</div>
+    <div class="q-text">Which type of problem sounds most satisfying to solve?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="select(this, 'q4', 'mechanical_problem')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Making a machine work better</div><div class="opt-sub">Reducing friction, improving efficiency</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q4', 'civil_problem')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Designing safe infrastructure</div><div class="opt-sub">A bridge that can handle load and weather</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q4', 'electrical_problem')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Getting a circuit or system to work</div><div class="opt-sub">Signals, power, embedded systems</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q4', 'software_problem')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Building software that solves a problem</div><div class="opt-sub">Apps, algorithms, automation</div></div>
+      </button>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" onclick="back(4)">← Back</button>
+      <button class="btn-next" id="q4-next" disabled onclick="next(4)">Next →</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q5">
+    <div class="q-section-label">Interests</div>
+    <div class="q-number">Question 5 of 10</div>
+    <div class="q-text">Which of these would you most want to work on in your career?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="select(this, 'q5', 'ev')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Electric vehicles or robotics</div><div class="opt-sub">Mechanical and automotive systems</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q5', 'city')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Building cities and infrastructure</div><div class="opt-sub">Roads, bridges, water systems</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q5', 'chips')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Electronics and power systems</div><div class="opt-sub">Circuits, grids, microcontrollers</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q5', 'pharma')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Pharmaceuticals or clean energy</div><div class="opt-sub">Chemical processes at industrial scale</div></div>
+      </button>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" onclick="back(5)">← Back</button>
+      <button class="btn-next" id="q5-next" disabled onclick="next(5)">Next →</button>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="question-card" id="q6">
+    <div class="q-section-label">Interests</div>
+    <div class="q-number">Question 6 of 10</div>
+    <div class="q-text">When something breaks, what's your instinct?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="select(this, 'q6', 'take_apart')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Take it apart to see how it works</div><div class="opt-sub">Mechanical curiosity</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q6', 'look_up')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Look up why it failed structurally</div><div class="opt-sub">Root cause and analysis</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q6', 'check_power')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Check the wiring or power source</div><div class="opt-sub">Electrical instinct</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q6', 'debug')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Debug it like a logic problem</div><div class="opt-sub">Systematic elimination</div></div>
+      </button>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" onclick="back(6)">← Back</button>
+      <button class="btn-next" id="q6-next" disabled onclick="next(6)">Next →</button>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="question-card" id="q7">
+    <div class="q-section-label">Work style</div>
+    <div class="q-number">Question 7 of 10</div>
+    <div class="q-text">How do you prefer to see the results of your work?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="select(this, 'q7', 'physical')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">A physical object I designed and built</div><div class="opt-sub">Something I can hold or stand next to</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q7', 'infrastructure')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Infrastructure people use every day</div><div class="opt-sub">Roads, buildings, public systems</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q7', 'system_running')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">A system running reliably</div><div class="opt-sub">Power grid, signal network, process</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q7', 'software_live')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Software that people actually use</div><div class="opt-sub">An app or tool running in the world</div></div>
+      </button>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" onclick="back(7)">← Back</button>
+      <button class="btn-next" id="q7-next" disabled onclick="next(7)">Next →</button>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="question-card" id="q8">
+    <div class="q-section-label">Subjects</div>
+    <div class="q-number">Question 8 of 10</div>
+    <div class="q-text">How do you feel about heavy math?</div>
+    <div class="options-grid single-col">
+      <button class="option-btn" onclick="select(this, 'q8', 'love_math')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">I enjoy it — it's satisfying when it clicks</div><div class="opt-sub">Calculus, linear algebra, differential equations are fine by me</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q8', 'ok_math')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">I'm okay with it if it's applied to real problems</div><div class="opt-sub">I don't love pure math but I can handle it</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q8', 'less_math')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">I'd rather keep math to a minimum</div><div class="opt-sub">I prefer working with concepts and processes</div></div>
+      </button>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" onclick="back(8)">← Back</button>
+      <button class="btn-next" id="q8-next" disabled onclick="next(8)">Next →</button>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="question-card" id="q9">
+    <div class="q-section-label">Interests</div>
+    <div class="q-number">Question 9 of 10</div>
+    <div class="q-text">Which sector sounds most exciting to work in?</div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="select(this, 'q9', 'aerospace_auto')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Aerospace or automotive</div><div class="opt-sub">Planes, rockets, cars, drones</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q9', 'construction')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Construction or urban development</div><div class="opt-sub">Buildings, transport, city planning</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q9', 'tech')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Tech or electronics</div><div class="opt-sub">Devices, software, systems</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q9', 'energy_pharma')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Energy or pharmaceuticals</div><div class="opt-sub">Clean energy, oil & gas, drug manufacturing</div></div>
+      </button>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" onclick="back(9)">← Back</button>
+      <button class="btn-next" id="q9-next" disabled onclick="next(9)">Next →</button>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="question-card" id="q10">
+    <div class="q-section-label">Big picture</div>
+    <div class="q-number">Question 10 of 10</div>
+    <div class="q-text">Finish this sentence: In 10 years I want to be known as someone who...</div>
+    <div class="options-grid single-col">
+      <button class="option-btn" onclick="select(this, 'q10', 'built_things')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Designed and built things that actually work</div><div class="opt-sub">Physical products, machines, systems</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q10', 'shaped_cities')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Shaped the places people live and move through</div><div class="opt-sub">Infrastructure, cities, public works</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q10', 'powered_world')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Kept the lights on and the signals moving</div><div class="opt-sub">Electrical systems, networks, embedded tech</div></div>
+      </button>
+      <button class="option-btn" onclick="select(this, 'q10', 'scaled_processes')">
+        <div class="opt-radio"></div>
+        <div class="opt-text"><div class="opt-label">Turned lab ideas into real-world production</div><div class="opt-sub">Chemical, pharmaceutical, or energy processes</div></div>
+      </button>
+    </div>
+    <div class="q-nav">
+      <button class="btn-back" onclick="back(10)">← Back</button>
+      <button class="btn-next" id="q10-next" disabled onclick="showResult()">See my result →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-card" id="result">
+    <div class="result-header">
+      <div class="result-label">Your best fit is</div>
+      <div class="result-icon" id="result-icon"></div>
+      <div class="result-branch-name" id="result-name"></div>
+      <div class="result-tagline" id="result-tagline"></div>
+    </div>
+
+    <div class="result-body">
+      <h3>Why this branch fits you</h3>
+      <p id="result-explanation"></p>
+      <div class="result-traits" id="result-traits"></div>
+    </div>
+
+    <div class="result-body">
+      <h3>How your answers aligned</h3>
+      <div class="score-bars" id="score-bars"></div>
+    </div>
+
+    <div class="result-actions">
+      <a id="result-link" href="branches.html" class="btn-primary">Read the full branch breakdown →</a>
+      <button class="btn-ghost" onclick="restart()">Retake the quiz</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Engineering Decoded — built by a student, for students.</span>
+  <span>Toronto, Ontario</span>
+</footer>
+
+<script>
+  const answers = {};
+  const totalQ = 10;
+
+  // Scoring weights per answer → branch points
+  const scoring = {
+    // Q1 favourite subject
+    q1: { physics: {mech:3,aero:2}, chemistry: {chem:4}, math: {elec:2,soft:2,mech:1}, coding: {soft:4,elec:1} },
+    // Q2 interesting to study
+    q2: { thermo: {mech:3,chem:2,aero:1}, structures: {civil:4,mech:1}, circuits: {elec:4}, reactions: {chem:4} },
+    // Q3 work environment
+    q3: { workshop: {mech:3,aero:2}, outdoor: {civil:4}, office: {soft:3,elec:2,mech:1}, plant: {chem:4} },
+    // Q4 satisfying problem
+    q4: { mechanical_problem:{mech:4,aero:2}, civil_problem:{civil:4}, electrical_problem:{elec:4}, software_problem:{soft:4} },
+    // Q5 career work
+    q5: { ev:{mech:4,aero:1}, city:{civil:4}, chips:{elec:4}, pharma:{chem:4} },
+    // Q6 when something breaks
+    q6: { take_apart:{mech:4,aero:1}, look_up:{civil:3,mech:1}, check_power:{elec:4}, debug:{soft:4,elec:1} },
+    // Q7 see results
+    q7: { physical:{mech:4,aero:2}, infrastructure:{civil:4}, system_running:{elec:3,chem:2}, software_live:{soft:4} },
+    // Q8 math attitude
+    q8: { love_math:{elec:2,soft:2,mech:1}, ok_math:{mech:2,civil:2,aero:2}, less_math:{chem:2,civil:1} },
+    // Q9 sector
+    q9: { aerospace_auto:{aero:4,mech:2}, construction:{civil:4}, tech:{soft:3,elec:3}, energy_pharma:{chem:4} },
+    // Q10 big picture
+    q10: { built_things:{mech:3,aero:2}, shaped_cities:{civil:4}, powered_world:{elec:4}, scaled_processes:{chem:4} }
+  };
+
+  const branches = {
+    mech:  { name: 'Mechanical Engineering', icon: '⚙', tagline: 'Design, build, and move things in the physical world.', link: 'branches.html#mechanical',
+      explanation: "Your answers consistently pointed toward hands-on physical work, mechanical problem-solving, and building things you can actually see and touch. Mechanical engineering sits at the intersection of physics, design, and real-world application — you'd spend your career designing and improving the systems that make everything move.",
+      traits: ['Physics-oriented', 'Hands-on learner', 'Design-focused', 'Builds physical things'] },
+    civil: { name: 'Civil Engineering', icon: '🏗', tagline: 'Shape the infrastructure that cities and people depend on.', link: 'branches.html#civil',
+      explanation: "You're drawn to work that has a clear, lasting impact on the world around you. Civil engineering is about designing the infrastructure people use every day — from bridges and roads to water systems and buildings. If you like working outdoors, thinking about how communities function, and seeing your work become part of the landscape, this is the branch for you.",
+      traits: ['Big-picture thinker', 'Outdoors-oriented', 'Impact-driven', 'Structural mindset'] },
+    elec:  { name: 'Electrical Engineering', icon: '⚡', tagline: 'Build the systems that power and connect everything.', link: 'branches.html#electrical',
+      explanation: "Your profile shows a strong lean toward circuits, signals, and systems thinking. Electrical engineering is one of the most analytically demanding branches — it rewards people who enjoy math, like solving systematic problems, and want to work on the invisible infrastructure that makes modern life function.",
+      traits: ['Analytical', 'Systems thinker', 'Math-comfortable', 'Tech-oriented'] },
+    chem:  { name: 'Chemical Engineering', icon: '🧪', tagline: 'Scale up chemical processes that change industries.', link: 'branches.html#chemical',
+      explanation: "You gravitated toward chemistry, industrial processes, and large-scale systems. Chemical engineers solve the problem of taking something that works in a lab and making it work at massive scale — in pharmaceutical plants, energy facilities, and manufacturing. If you enjoyed chemistry and want to apply it to real production problems, this is a strong match.",
+      traits: ['Chemistry-oriented', 'Process-focused', 'Industrial mindset', 'Scale thinker'] },
+    soft:  { name: 'Software Engineering', icon: '💻', tagline: 'Build systems and tools that run at scale.', link: 'branches.html#software',
+      explanation: "Your answers suggest you're drawn to logic, systems, and building things through code rather than physical materials. Software engineering applies engineering principles — not just coding — to designing reliable, large-scale systems. If debugging and abstract problem-solving is how your brain naturally works, this is worth looking at seriously.",
+      traits: ['Logic-driven', 'Systematic debugger', 'Abstract thinker', 'Builds digitally'] },
+    aero:  { name: 'Aerospace Engineering', icon: '✈', tagline: 'Design aircraft, spacecraft, and the systems that fly.', link: 'branches.html#aerospace',
+      explanation: "Your interest in aerospace or automotive systems, combined with physics and hands-on problem solving, points toward aerospace. It's a highly specialized branch — heavily overlapping with mechanical — and best suited to people who are specifically drawn to aircraft, spacecraft, or drones. Many students enter through mechanical and specialize from there.",
+      traits: ['Physics-oriented', 'Specialization-focused', 'Detail-oriented', 'Aerospace curious'] }
+  };
+
+  function select(btn, qId, value) {
+    const card = document.getElementById(qId);
+    card.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    answers[qId] = value;
+    document.getElementById(qId + '-next').disabled = false;
+  }
+
+  function next(qNum) {
+    document.getElementById('q' + qNum).classList.remove('active');
+    document.getElementById('q' + (qNum + 1)).classList.add('active');
+    updateProgress(qNum + 1);
+    window.scrollTo({ top: document.querySelector('.progress-bar-wrap').offsetTop - 80, behavior: 'smooth' });
+  }
+
+  function back(qNum) {
+    document.getElementById('q' + qNum).classList.remove('active');
+    document.getElementById('q' + (qNum - 1)).classList.add('active');
+    updateProgress(qNum - 1);
+    window.scrollTo({ top: document.querySelector('.progress-bar-wrap').offsetTop - 80, behavior: 'smooth' });
+  }
+
+  function updateProgress(qNum) {
+    const pct = ((qNum - 1) / totalQ) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = 'Question ' + qNum + ' of ' + totalQ;
+  }
+
+  function calcScores() {
+    const totals = { mech:0, civil:0, elec:0, chem:0, soft:0, aero:0 };
+    for (const [qId, answer] of Object.entries(answers)) {
+      const pts = scoring[qId]?.[answer] || {};
+      for (const [branch, score] of Object.entries(pts)) {
+        totals[branch] = (totals[branch] || 0) + score;
+      }
+    }
+    return totals;
+  }
+
+  function showResult() {
+    document.getElementById('q10').classList.remove('active');
+    document.getElementById('progressWrap').style.display = 'none';
+
+    const scores = calcScores();
+    const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+    const topBranch = sorted[0][0];
+    const maxScore = sorted[0][1];
+    const b = branches[topBranch];
+
+    document.getElementById('result-icon').textContent = b.icon;
+    document.getElementById('result-name').textContent = b.name;
+    document.getElementById('result-tagline').textContent = b.tagline;
+    document.getElementById('result-explanation').textContent = b.explanation;
+    document.getElementById('result-link').href = b.link;
+
+    const traitsEl = document.getElementById('result-traits');
+    traitsEl.innerHTML = b.traits.map(t => `<span class="trait-chip">${t}</span>`).join('');
+
+    const barsEl = document.getElementById('score-bars');
+    const branchNames = { mech:'Mechanical', civil:'Civil', elec:'Electrical', chem:'Chemical', soft:'Software', aero:'Aerospace' };
+    barsEl.innerHTML = sorted.map(([key, score], i) => {
+      const pct = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
+      const isTop = i === 0;
+      return `<div class="score-row">
+        <div class="score-name">${branches[key].icon} ${branchNames[key]}</div>
+        <div class="score-track"><div class="score-fill ${isTop ? '' : 'dim'}" style="width:${pct}%"></div></div>
+        <div class="score-pct">${pct}%</div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('result').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function restart() {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    document.querySelectorAll('.question-card').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.btn-next').forEach(b => b.disabled = true);
+    document.getElementById('result').classList.remove('active');
+    document.getElementById('progressWrap').style.display = 'flex';
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('progressLabel').textContent = 'Question 1 of 10';
+    document.getElementById('q1').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
