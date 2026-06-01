@@ -8,169 +8,194 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
   :root {
     --green: #2D6A4F; --green-light: #EAF3EC; --green-mid: #74B89A; --green-dark: #1B4332;
-    --text: #1a1a18; --text-muted: #5F5E5A; --text-faint: #888780;
-    --bg: #fafaf8; --bg-card: #ffffff;
-    --border: rgba(0,0,0,0.08); --border-strong: rgba(0,0,0,0.14);
+    --dark: #0D1410; --dark-s: #131b16; --dark-b: rgba(116,184,154,0.11);
+    --text: #1a1a18; --text-2: #5F5E5A; --text-3: #6B6A65;
+    --bg: #fafaf8; --card: #ffffff;
+    --border: rgba(0,0,0,0.07); --border-s: rgba(0,0,0,0.12);
+    --e1: cubic-bezier(0.25, 1, 0.5, 1);
+    --e2: cubic-bezier(0.16, 1, 0.3, 1);
+    --e3: cubic-bezier(0.32, 0.72, 0, 1);
     --blue-bg: #E6F1FB; --blue-text: #185FA5;
     --purple-bg: #EEEDFE; --purple-text: #534AB7;
     --amber-bg: #FAEEDA; --amber-text: #854F0B;
     --red-bg: #FDE8E8; --red-text: #9B1C1C;
   }
+
   html { scroll-behavior: smooth; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
 
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.025;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='250' height='250'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size: 250px 250px;
+  }
+
+  /* ── NAV ── */
   nav {
     position: sticky; top: 0; z-index: 100;
     background: var(--bg); border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between; padding: 1rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem; transition: box-shadow 250ms var(--e1);
   }
+  nav.scrolled { box-shadow: 0 1px 24px rgba(0,0,0,0.07); }
   .logo { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--text); text-decoration: none; }
   .logo span { color: var(--green); }
   .nav-links { display: flex; gap: 2rem; align-items: center; }
-  .nav-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a { font-size: 13px; color: var(--text-2); text-decoration: none; transition: color 150ms var(--e1); }
   .nav-links a:hover { color: var(--text); }
   .nav-links a.active { color: var(--text); font-weight: 500; }
 
-  .page-header { padding: 4.5rem 3rem 3rem; max-width: 760px; animation: fadeUp 0.5s ease both; }
-  .page-tag {
+  /* ── PAGE BANNER ── */
+  .page-banner {
+    background: var(--dark); padding: 4rem 3rem 3.5rem;
+    position: relative; overflow: hidden;
+  }
+  .page-banner::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(116,184,154,0.07) 1px,transparent 1px), linear-gradient(90deg,rgba(116,184,154,0.07) 1px,transparent 1px);
+    background-size: 48px 48px; pointer-events: none;
+  }
+  .page-banner::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 120% 80% at 100% 50%, transparent 40%, var(--dark) 80%);
+    pointer-events: none;
+  }
+  .banner-inner { position: relative; z-index: 1; max-width: 680px; animation: slideUp 0.6s 0.1s var(--e2) both; }
+  .page-eyebrow {
     display: inline-flex; align-items: center; gap: 6px;
-    font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
-    color: var(--green); background: var(--green-light);
-    padding: 0.3rem 0.8rem; border-radius: 20px; margin-bottom: 1.25rem;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--green-mid); background: rgba(116,184,154,0.1);
+    border: 1px solid rgba(116,184,154,0.2);
+    padding: 0.3rem 0.8rem; border-radius: 50px; margin-bottom: 1.25rem;
   }
-  .page-header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 1rem; }
-  .page-header h1 em { font-style: italic; color: var(--green); }
-  .page-header p { font-size: 1rem; color: var(--text-muted); max-width: 560px; line-height: 1.75; }
+  .page-banner h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.12; letter-spacing: -0.025em; color: #ede9e0; text-wrap: balance; margin-bottom: 0.9rem; }
+  .page-banner h1 em { font-style: italic; color: var(--green-mid); }
+  .page-banner p { font-size: 14.5px; color: rgba(237,233,224,0.46); max-width: 540px; line-height: 1.75; }
 
-  /* HS COURSES STRIP */
+  /* ── HS COURSES STRIP ── */
   .hs-strip {
-    margin: 0 3rem 2rem;
-    background: #1a1a18; border-radius: 16px; padding: 2rem 2.25rem;
-    animation: fadeUp 0.5s 0.05s ease both;
+    margin: 2rem 3rem; background: var(--dark-s);
+    border: 1px solid var(--dark-b); border-radius: 18px; padding: 2rem 2.25rem;
   }
-  .hs-strip h2 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; font-weight: 400; color: #fff; margin-bottom: 0.4rem; }
-  .hs-strip p { font-size: 13.5px; color: rgba(255,255,255,0.55); margin-bottom: 1.25rem; line-height: 1.65; }
-  .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.6rem; }
-  .course-chip {
-    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px; padding: 0.7rem 0.9rem;
-  }
-  .course-chip .cc-code { font-size: 11px; font-weight: 500; color: var(--green-mid); margin-bottom: 0.2rem; }
-  .course-chip .cc-name { font-size: 13px; color: #fff; line-height: 1.35; }
-  .course-chip .cc-note { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 0.15rem; }
+  .hs-strip h2 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; font-weight: 400; color: #ede9e0; margin-bottom: 0.4rem; }
+  .hs-strip p { font-size: 13.5px; color: rgba(237,233,224,0.4); margin-bottom: 1.25rem; line-height: 1.65; max-width: 540px; }
+  .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.6rem; }
+  .course-chip { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 0.75rem 0.9rem; }
+  .cc-code { font-size: 11px; font-weight: 500; color: var(--green-mid); margin-bottom: 0.2rem; letter-spacing: 0.04em; }
+  .cc-name { font-size: 13px; color: rgba(237,233,224,0.8); line-height: 1.35; }
+  .cc-note { font-size: 11px; color: rgba(237,233,224,0.3); margin-top: 0.15rem; }
 
-  /* SECTION PILLS */
-  .section-nav { padding: 0 3rem 2.5rem; display: flex; gap: 0.6rem; flex-wrap: wrap; animation: fadeUp 0.5s 0.1s ease both; }
-  .pill { font-size: 12px; font-weight: 500; padding: 0.35rem 0.9rem; border-radius: 20px; border: 1px solid var(--border-strong); color: var(--text-muted); background: transparent; text-decoration: none; transition: all 0.18s; }
+  /* ── PILLS ── */
+  .section-nav { padding: 2rem 3rem 2.5rem; display: flex; gap: 0.55rem; flex-wrap: wrap; }
+  .pill { font-size: 12px; font-weight: 500; padding: 0.35rem 0.9rem; border-radius: 50px; border: 1px solid var(--border-s); color: var(--text-2); background: transparent; text-decoration: none; cursor: pointer; transition: background 150ms var(--e1), color 150ms var(--e1), border-color 150ms var(--e1); }
   .pill:hover { background: var(--green-light); color: var(--green); border-color: var(--green-mid); }
 
   .divider { height: 1px; background: var(--border); margin: 0 3rem; }
 
-  /* MAIN LAYOUT */
+  /* ── LAYOUT ── */
   .main-layout { display: grid; grid-template-columns: 1fr 260px; gap: 3rem; padding: 3rem 3rem 5rem; max-width: 1100px; }
 
-  /* PROVINCE SECTION */
-  .province-section { margin-bottom: 3rem; animation: fadeUp 0.5s ease both; }
-  .province-section:nth-child(2) { animation-delay: 0.05s; }
-  .province-section:nth-child(3) { animation-delay: 0.1s; }
+  /* ── PROVINCE SECTION ── */
+  .province-section { margin-bottom: 3rem; }
+  .province-label { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+  .province-flag { font-size: 1.4rem; }
+  .province-label h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; letter-spacing: -0.01em; }
+  .province-label .p-note { font-size: 13px; color: var(--text-2); margin-left: auto; }
 
-  .province-label {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 1.5rem; padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .province-flag { font-size: 1.5rem; }
-  .province-label h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 400; letter-spacing: -0.01em; }
-  .province-label .p-note { font-size: 13px; color: var(--text-muted); margin-left: auto; }
-
-  /* UNI CARD */
+  /* ── UNI CARD — double-bezel accordion ── */
   .uni-card {
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 16px; overflow: hidden; margin-bottom: 1.25rem;
-    transition: box-shadow 0.2s;
+    background: rgba(0,0,0,0.018); border: 1px solid var(--border);
+    border-radius: 20px; padding: 5px; margin-bottom: 1.1rem;
+    transition: box-shadow 220ms var(--e1);
   }
-  .uni-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  @media (hover:hover) and (pointer:fine) {
+    .uni-card:hover { box-shadow: 0 8px 30px rgba(45,106,79,0.09); }
+  }
+  .uni-inner { background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,0.9); }
 
   .uni-header {
     display: flex; align-items: center; gap: 1rem;
-    padding: 1.25rem 1.5rem; cursor: pointer;
-    border-bottom: 1px solid transparent; transition: border-color 0.2s;
+    padding: 1.25rem 1.4rem; cursor: pointer;
+    border-bottom: 1px solid transparent; transition: border-color 150ms var(--e1);
+    user-select: none;
   }
   .uni-card.open .uni-header { border-bottom-color: var(--border); }
 
-  .uni-initial {
-    width: 42px; height: 42px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'DM Serif Display', serif; font-size: 1.1rem;
-    font-weight: 400; flex-shrink: 0;
-  }
-
+  .uni-initial { width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-family: 'DM Serif Display', serif; font-size: 1.05rem; font-weight: 400; flex-shrink: 0; }
   .uni-header-text { flex: 1; }
-  .uni-name { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 0.15rem; }
-  .uni-sub { font-size: 12.5px; color: var(--text-muted); }
-
-  .uni-badges { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-left: auto; padding-left: 1rem; }
-  .badge { font-size: 11px; font-weight: 500; padding: 0.2rem 0.6rem; border-radius: 20px; white-space: nowrap; }
-
-  .chevron { width: 18px; height: 18px; flex-shrink: 0; color: var(--text-faint); transition: transform 0.25s; margin-left: 0.5rem; }
+  .uni-name { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 0.12rem; }
+  .uni-sub { font-size: 12.5px; color: var(--text-2); }
+  .uni-badges { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-left: auto; padding-left: 0.75rem; }
+  .badge { font-size: 11px; font-weight: 500; padding: 0.2rem 0.6rem; border-radius: 50px; white-space: nowrap; }
+  .chevron { width: 18px; height: 18px; flex-shrink: 0; color: var(--text-3); transition: transform 220ms var(--e1); margin-left: 0.5rem; }
   .uni-card.open .chevron { transform: rotate(180deg); }
 
-  .uni-body { display: none; padding: 1.5rem; }
-  .uni-card.open .uni-body { display: block; }
+  .uni-body { max-height: 0; opacity: 0; overflow: hidden; padding: 0 1.4rem; transition: max-height 460ms var(--e3), opacity 300ms var(--e1), padding 300ms var(--e3); }
+  .uni-card.open .uni-body { max-height: 2400px; opacity: 1; padding: 1.5rem 1.4rem 1.75rem; }
 
-  /* INFO GRID */
   .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem; }
   .info-box { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
-  .info-box-label { font-size: 10.5px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.5rem; }
-  .info-box ul { list-style: none; padding: 0; }
-  .info-box ul li { font-size: 13px; color: var(--text-muted); padding: 0.2rem 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
+  .info-box-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.5rem; }
+  .info-box ul { list-style: none; }
+  .info-box ul li { font-size: 13px; color: var(--text-2); padding: 0.2rem 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
   .info-box ul li:last-child { border-bottom: none; }
-  .info-box p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .info-box p { font-size: 13px; color: var(--text-2); line-height: 1.6; }
   .avg-range { font-size: 1.15rem; font-weight: 500; color: var(--text); margin-bottom: 0.2rem; }
-  .avg-note { font-size: 12px; color: var(--text-faint); line-height: 1.5; }
+  .avg-note { font-size: 12px; color: var(--text-3); line-height: 1.5; }
 
-  .supplemental-box {
-    background: var(--green-light); border: 1px solid var(--green-mid);
-    border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 1rem;
-  }
+  .branch-avgs { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
+  .bar-row { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; }
+  .bar-row .bar-name { color: var(--text-2); }
+  .bar-row .bar-val { font-weight: 500; color: var(--text); }
+
+  .supplemental-box { background: var(--green-light); border: 1px solid var(--green-mid); border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 1rem; }
   .supplemental-box .info-box-label { color: var(--green-dark); }
   .supplemental-box p { font-size: 13px; color: var(--green-dark); line-height: 1.6; }
 
-  .tip-box {
-    border-left: 3px solid var(--green); border-radius: 0 8px 8px 0;
-    background: var(--bg); padding: 0.85rem 1rem;
-    font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 0.85rem;
-  }
+  .tip-box { border-left: 3px solid var(--green); border-radius: 0 8px 8px 0; background: var(--bg); padding: 0.85rem 1rem; font-size: 13px; color: var(--text-2); line-height: 1.6; margin-top: 0.85rem; }
   .tip-box strong { color: var(--text); font-weight: 500; }
 
-  .branch-avgs { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
-  .branch-avg-row { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; }
-  .branch-avg-row .bar-name { color: var(--text-muted); }
-  .branch-avg-row .bar-val { font-weight: 500; color: var(--text); }
-
-  /* SIDEBAR */
+  /* ── SIDEBAR ── */
   .sidebar { position: sticky; top: 80px; align-self: start; }
-  .sidebar-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.35rem; margin-bottom: 1rem; }
-  .sidebar-card h4 { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.9rem; }
-  .sidebar-nav-link { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); text-decoration: none; padding: 0.35rem 0.75rem; border-left: 2px solid transparent; transition: all 0.15s; border-radius: 0 6px 6px 0; cursor: pointer; }
-  .sidebar-nav-link:hover { color: var(--green); border-left-color: var(--green); background: var(--green-light); }
-  .founder-sidebar { background: var(--green-light); border: 1px solid var(--green-mid); border-radius: 14px; padding: 1.35rem; margin-bottom: 1rem; }
-  .founder-sidebar h4 { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green-dark); margin-bottom: 0.6rem; }
-  .founder-sidebar p { font-size: 13px; color: var(--green-dark); line-height: 1.6; font-style: italic; }
+  .sidebar-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.35rem; margin-bottom: 1rem; }
+  .sidebar-card h4 { font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.9rem; }
+  .snl { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-2); text-decoration: none; padding: 0.35rem 0.75rem; border-left: 2px solid transparent; border-radius: 0 6px 6px 0; cursor: pointer; transition: color 150ms var(--e1), border-left-color 150ms var(--e1), background 150ms var(--e1); }
+  .snl:hover { color: var(--green); border-left-color: var(--green); background: var(--green-light); }
+  .founder-card { background: var(--dark); border-radius: 14px; padding: 1.35rem; margin-bottom: 1rem; position: relative; overflow: hidden; }
+  .founder-card::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(116,184,154,0.05) 1px,transparent 1px), linear-gradient(90deg,rgba(116,184,154,0.05) 1px,transparent 1px); background-size: 28px 28px; }
+  .founder-card h4 { font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 0.6rem; position: relative; z-index: 1; }
+  .founder-card p { font-size: 13px; color: rgba(237,233,224,0.48); line-height: 1.6; font-style: italic; position: relative; z-index: 1; }
 
-  .warning-box { background: var(--amber-bg); border: 1px solid #e8c98a; border-radius: 12px; padding: 1.1rem; margin-bottom: 1rem; }
-  .warning-box h4 { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--amber-text); margin-bottom: 0.4rem; }
-  .warning-box p { font-size: 12.5px; color: var(--amber-text); line-height: 1.6; }
+  .warning-card { background: var(--amber-bg); border: 1px solid #e8c98a; border-radius: 12px; padding: 1.1rem; margin-bottom: 1rem; }
+  .warning-card h4 { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--amber-text); margin-bottom: 0.4rem; }
+  .warning-card p { font-size: 12.5px; color: var(--amber-text); line-height: 1.6; }
 
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  .courses-checklist { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 0.25rem; }
+  .cc-item { font-size: 12px; color: var(--text-2); display: flex; align-items: center; gap: 6px; }
+  .cc-item::before { content: '✓'; color: var(--green); font-size: 11px; font-weight: 600; }
+
+  /* ── REVEAL ── */
+  [data-r] { opacity: 0; transform: translateY(16px); transition: opacity 0.6s var(--e2), transform 0.6s var(--e2); }
+  [data-r].on { opacity: 1; transform: none; }
+  [data-r][data-d="1"] { transition-delay: 80ms; }
+  [data-r][data-d="2"] { transition-delay: 160ms; }
+
+  @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+    body::after { display: none; }
+  }
 
   @media (max-width: 820px) {
     nav { padding: 1rem 1.5rem; }
     .nav-links { display: none; }
-    .page-header, .section-nav { padding-left: 1.5rem; padding-right: 1.5rem; }
-    .hs-strip { margin: 0 1.5rem 2rem; }
+    .page-banner { padding: 3rem 1.5rem 2.5rem; }
+    .hs-strip { margin: 1.5rem 1.5rem; }
+    .section-nav { padding: 1.5rem 1.5rem 2rem; }
     .divider { margin: 0 1.5rem; }
     .main-layout { grid-template-columns: 1fr; padding: 2rem 1.5rem 4rem; gap: 0; }
     .sidebar { display: none; }
@@ -178,12 +203,12 @@
     .uni-badges { display: none; }
   }
 
-  footer { border-top: 1px solid var(--border); padding: 1.5rem 3rem; display: flex; justify-content: space-between; font-size: 12px; color: var(--text-faint); }
+  footer { border-top: 1px solid var(--border); padding: 1.5rem 3rem; display: flex; justify-content: space-between; font-size: 12px; color: var(--text-3); }
 </style>
 </head>
 <body>
 
-<nav>
+<nav id="mainNav">
   <a href="index.html" class="logo">Engineering <span>Decoded</span></a>
   <div class="nav-links">
     <a href="branches.html">Branches</a>
@@ -194,47 +219,25 @@
   </div>
 </nav>
 
-<div class="page-header">
-  <div class="page-tag">🎓 Ontario focus · BC · Quebec · Other provinces</div>
-  <h1>University requirements,<br><em>all in one place.</em></h1>
-  <p>Every major Canadian engineering school, what they actually need from you in high school, their competitive averages, supplemental requirements, and what to watch out for. Updated for 2025–26 applications.</p>
+<div class="page-banner">
+  <div class="banner-inner">
+    <div class="page-eyebrow">🎓 Ontario focus · BC · Quebec · Other provinces</div>
+    <h1>University requirements,<br><em>all in one place.</em></h1>
+    <p>Every major Canadian engineering school, what they need from you in high school, their competitive averages, and what to watch out for. Updated for 2025–26 applications.</p>
+  </div>
 </div>
 
 <!-- HS COURSES STRIP -->
-<div class="hs-strip" id="hs-courses">
+<div class="hs-strip" id="hs-courses" data-r>
   <h2>The Ontario high school courses that matter most</h2>
   <p>Almost every engineering program in Canada requires the same core courses. Drop any of these and you'll close doors before applications even open.</p>
   <div class="courses-grid">
-    <div class="course-chip">
-      <div class="cc-code">MHF4U</div>
-      <div class="cc-name">Advanced Functions</div>
-      <div class="cc-note">Required everywhere</div>
-    </div>
-    <div class="course-chip">
-      <div class="cc-code">MCV4U</div>
-      <div class="cc-name">Calculus & Vectors</div>
-      <div class="cc-note">Required everywhere</div>
-    </div>
-    <div class="course-chip">
-      <div class="cc-code">SPH4U</div>
-      <div class="cc-name">Physics</div>
-      <div class="cc-note">Required everywhere</div>
-    </div>
-    <div class="course-chip">
-      <div class="cc-code">SCH4U</div>
-      <div class="cc-name">Chemistry</div>
-      <div class="cc-note">Required at Waterloo, UofT, most others</div>
-    </div>
-    <div class="course-chip">
-      <div class="cc-code">ENG4U</div>
-      <div class="cc-name">English</div>
-      <div class="cc-note">Required everywhere</div>
-    </div>
-    <div class="course-chip">
-      <div class="cc-code">+1 4U/M</div>
-      <div class="cc-name">Any 4U or 4M course</div>
-      <div class="cc-note">Rounds out your top 6</div>
-    </div>
+    <div class="course-chip"><div class="cc-code">MHF4U</div><div class="cc-name">Advanced Functions</div><div class="cc-note">Required everywhere</div></div>
+    <div class="course-chip"><div class="cc-code">MCV4U</div><div class="cc-name">Calculus &amp; Vectors</div><div class="cc-note">Required everywhere</div></div>
+    <div class="course-chip"><div class="cc-code">SPH4U</div><div class="cc-name">Physics</div><div class="cc-note">Required everywhere</div></div>
+    <div class="course-chip"><div class="cc-code">SCH4U</div><div class="cc-name">Chemistry</div><div class="cc-note">Required at Waterloo, UofT, most others</div></div>
+    <div class="course-chip"><div class="cc-code">ENG4U</div><div class="cc-name">English</div><div class="cc-note">Required everywhere</div></div>
+    <div class="course-chip"><div class="cc-code">+1 4U/M</div><div class="cc-name">Any 4U or 4M course</div><div class="cc-note">Rounds out your top 6</div></div>
   </div>
 </div>
 
@@ -256,451 +259,199 @@
 
     <!-- ONTARIO -->
     <div class="province-section" id="ontario">
-      <div class="province-label">
+      <div class="province-label" data-r>
         <div class="province-flag">🍁</div>
         <h2>Ontario</h2>
         <div class="p-note">Apply via OUAC · Deadline ~Jan 15</div>
       </div>
 
       <!-- WATERLOO -->
-      <div class="uni-card open" id="waterloo">
-        <div class="uni-header" onclick="toggleUni('waterloo')">
-          <div class="uni-initial" style="background:#EAF3EC; color:#1B4332;">UW</div>
-          <div class="uni-header-text">
-            <div class="uni-name">University of Waterloo</div>
-            <div class="uni-sub">Waterloo, Ontario · Largest engineering school in Canada</div>
+      <div class="uni-card open" id="waterloo" data-r>
+        <div class="uni-inner">
+          <div class="uni-header" onclick="toggleUni('waterloo')">
+            <div class="uni-initial" style="background:#EAF3EC; color:#1B4332;">UW</div>
+            <div class="uni-header-text"><div class="uni-name">University of Waterloo</div><div class="uni-sub">Waterloo, Ontario · Largest engineering school in Canada</div></div>
+            <div class="uni-badges"><span class="badge" style="background:#EAF3EC; color:#1B4332;">Co-op</span><span class="badge" style="background:#FAEEDA; color:#854F0B;">Highly competitive</span></div>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div class="uni-badges">
-            <span class="badge" style="background:#EAF3EC; color:#1B4332;">Co-op</span>
-            <span class="badge" style="background:#FAEEDA; color:#854F0B;">Highly competitive</span>
+          <div class="uni-body">
+            <div class="info-grid">
+              <div class="info-box"><div class="info-box-label">Required courses (Ontario)</div><ul><li>Advanced Functions (MHF4U) — min 70%</li><li>Calculus &amp; Vectors (MCV4U) — min 70%</li><li>Chemistry (SCH4U) — min 70%</li><li>Physics (SPH4U) — min 70%</li><li>English (ENG4U) — min 70%</li><li>One additional 4U/M course</li></ul></div>
+              <div class="info-box"><div class="info-box-label">Competitive average by branch</div><div class="branch-avgs"><div class="bar-row"><span class="bar-name">⚙ Mechanical</span><span class="bar-val">High 80s–90s</span></div><div class="bar-row"><span class="bar-name">🏗 Civil</span><span class="bar-val">Mid–high 80s</span></div><div class="bar-row"><span class="bar-name">⚡ Electrical</span><span class="bar-val">High 80s–90s</span></div><div class="bar-row"><span class="bar-name">🧪 Chemical</span><span class="bar-val">High 80s</span></div><div class="bar-row"><span class="bar-name">💻 Software</span><span class="bar-val">Low–mid 90s</span></div><div class="bar-row"><span class="bar-name">✈ Mechatronics</span><span class="bar-val">High 80s–90s</span></div></div></div>
+              <div class="info-box"><div class="info-box-label">Co-op</div><p>Waterloo engineering is mandatory co-op — 6 work terms over 5 years. You graduate with nearly 2 years of paid work experience. One of the main reasons students choose Waterloo.</p></div>
+              <div class="info-box"><div class="info-box-label">Application deadlines</div><ul><li>OUAC application: Jan 15</li><li>AIF + video interview: Jan 30</li><li>Decisions: Feb–May (rolling)</li></ul></div>
+            </div>
+            <div class="supplemental-box"><div class="info-box-label">Supplemental — AIF + Video Interview</div><p>Waterloo requires an Admission Information Form (AIF) for all engineering applicants. It covers extracurriculars, work experience, and why you want to study engineering. Some programs also require a short video interview. Your AIF and interview are scored alongside your grades — a strong AIF can meaningfully improve your chances, especially around the 85–88% average range.</p></div>
+            <div class="tip-box"><strong>Application tip:</strong> Waterloo uses a Waterloo Adjustment Factor (WAF) — they adjust your average based on how students from your specific high school have historically performed at Waterloo. Coming from a rigorous school that grades strictly can actually work in your favour.</div>
           </div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="uni-body">
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-box-label">Required courses (Ontario)</div>
-              <ul>
-                <li>Advanced Functions (MHF4U) — min 70%</li>
-                <li>Calculus & Vectors (MCV4U) — min 70%</li>
-                <li>Chemistry (SCH4U) — min 70%</li>
-                <li>Physics (SPH4U) — min 70%</li>
-                <li>English (ENG4U) — min 70%</li>
-                <li>One additional 4U/M course</li>
-              </ul>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Competitive average by branch</div>
-              <div class="branch-avgs">
-                <div class="branch-avg-row"><span class="bar-name">⚙ Mechanical</span><span class="bar-val">High 80s–90s</span></div>
-                <div class="branch-avg-row"><span class="bar-name">🏗 Civil</span><span class="bar-val">Mid–high 80s</span></div>
-                <div class="branch-avg-row"><span class="bar-name">⚡ Electrical</span><span class="bar-val">High 80s–90s</span></div>
-                <div class="branch-avg-row"><span class="bar-name">🧪 Chemical</span><span class="bar-val">High 80s</span></div>
-                <div class="branch-avg-row"><span class="bar-name">💻 Software</span><span class="bar-val">Low–mid 90s</span></div>
-                <div class="branch-avg-row"><span class="bar-name">✈ Mechatronics</span><span class="bar-val">High 80s–90s</span></div>
-              </div>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Co-op</div>
-              <p>Waterloo engineering is mandatory co-op — 6 work terms over 5 years. You graduate with nearly 2 years of paid work experience. One of the main reasons students choose Waterloo.</p>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Application deadlines</div>
-              <ul>
-                <li>OUAC application: Jan 15</li>
-                <li>AIF + video interview: Jan 30</li>
-                <li>Decisions: Feb–May (rolling)</li>
-              </ul>
-            </div>
-          </div>
-          <div class="supplemental-box">
-            <div class="info-box-label">Supplemental — AIF + Video Interview</div>
-            <p>Waterloo requires an Admission Information Form (AIF) for all engineering applicants. It covers extracurriculars, work experience, and why you want to study engineering. Some programs also require a short video interview. Your AIF and interview are scored alongside your grades — a strong AIF can meaningfully improve your chances, especially around the 85–88% average range.</p>
-          </div>
-          <div class="tip-box"><strong>Application tip:</strong> Waterloo uses a Waterloo Adjustment Factor (WAF) — they adjust your average based on how students from your specific high school have historically performed at Waterloo. Coming from a rigorous school that grades strictly can actually work in your favour. Don't compare raw percentages with students from other schools without accounting for this.</div>
         </div>
       </div>
 
       <!-- U OF T -->
-      <div class="uni-card" id="uoft">
-        <div class="uni-header" onclick="toggleUni('uoft')">
-          <div class="uni-initial" style="background:#E6F1FB; color:#185FA5;">UT</div>
-          <div class="uni-header-text">
-            <div class="uni-name">University of Toronto</div>
-            <div class="uni-sub">Toronto, Ontario · #1 ranked engineering in Canada</div>
+      <div class="uni-card" id="uoft" data-r data-d="1">
+        <div class="uni-inner">
+          <div class="uni-header" onclick="toggleUni('uoft')">
+            <div class="uni-initial" style="background:#E6F1FB; color:#185FA5;">UT</div>
+            <div class="uni-header-text"><div class="uni-name">University of Toronto</div><div class="uni-sub">Toronto, Ontario · #1 ranked engineering in Canada</div></div>
+            <div class="uni-badges"><span class="badge" style="background:#FDE8E8; color:#9B1C1C;">Most competitive</span><span class="badge" style="background:#E6F1FB; color:#185FA5;">OSP required</span></div>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div class="uni-badges">
-            <span class="badge" style="background:#FDE8E8; color:#9B1C1C;">Most competitive</span>
-            <span class="badge" style="background:#E6F1FB; color:#185FA5;">OSP required</span>
+          <div class="uni-body">
+            <div class="info-grid">
+              <div class="info-box"><div class="info-box-label">Required courses (Ontario)</div><ul><li>Advanced Functions (MHF4U)</li><li>Calculus &amp; Vectors (MCV4U)</li><li>Chemistry (SCH4U)</li><li>Physics (SPH4U)</li><li>English (ENG4U)</li><li>One additional 4U/M course</li></ul></div>
+              <div class="info-box"><div class="info-box-label">Competitive average</div><div class="avg-range">Mid–high 90s</div><div class="avg-note">Minimum cutoff is 70% in required courses, but this is nowhere near competitive. Mean admission average is in the mid-90s. Aim for 93%+ to be a realistic candidate.</div></div>
+              <div class="info-box"><div class="info-box-label">Co-op / PEY</div><p>U of T offers the Professional Experience Year (PEY) — a 12–16 month optional co-op in third year. It's competitive but highly regarded by employers. Not mandatory like Waterloo.</p></div>
+              <div class="info-box"><div class="info-box-label">Application deadlines</div><ul><li>OUAC application: Nov 1 (early) / Feb 1</li><li>OSP early consideration: Dec 1</li><li>OSP regular deadline: Jan 15</li><li>Decisions: Feb–May</li></ul></div>
+            </div>
+            <div class="supplemental-box"><div class="info-box-label">Supplemental — Online Student Profile (OSP)</div><p>The OSP is mandatory for all U of T Engineering applicants. It covers leadership, extracurriculars, and why you chose engineering. Only first-attempt grades are considered — repeated courses are noted but won't replace original marks.</p></div>
+            <div class="tip-box"><strong>Application tip:</strong> U of T engineering is the most grade-competitive program in Ontario. The supplemental matters, but grades are the primary filter. If you're below 90%, focus on other strong Ontario programs alongside U of T rather than treating it as your main target.</div>
           </div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="uni-body">
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-box-label">Required courses (Ontario)</div>
-              <ul>
-                <li>Advanced Functions (MHF4U)</li>
-                <li>Calculus & Vectors (MCV4U)</li>
-                <li>Chemistry (SCH4U)</li>
-                <li>Physics (SPH4U)</li>
-                <li>English (ENG4U)</li>
-                <li>One additional 4U/M course</li>
-              </ul>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Competitive average</div>
-              <div class="avg-range">Mid–high 90s</div>
-              <div class="avg-note">Minimum cutoff is 70% in required courses, but this is nowhere near competitive. Mean admission average from recent years is in the mid-90s. Aim for 93%+ to be a realistic candidate.</div>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Co-op / PEY</div>
-              <p>U of T offers the Professional Experience Year (PEY) — a 12–16 month optional co-op in third year. It's competitive but highly regarded by employers. Not mandatory like Waterloo.</p>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Application deadlines</div>
-              <ul>
-                <li>OUAC application: Nov 1 (early) / Feb 1</li>
-                <li>OSP early consideration: Dec 1</li>
-                <li>OSP regular deadline: Jan 15</li>
-                <li>Decisions: Feb–May</li>
-              </ul>
-            </div>
-          </div>
-          <div class="supplemental-box">
-            <div class="info-box-label">Supplemental — Online Student Profile (OSP)</div>
-            <p>The OSP is mandatory for all U of T Engineering applicants. It covers leadership, extracurriculars, and why you chose engineering. Submitting by the early consideration deadline (Dec 1) doesn't improve your chances of admission but may get you a decision earlier. Only first-attempt grades are considered — repeated courses are noted but won't replace original marks.</p>
-          </div>
-          <div class="tip-box"><strong>Application tip:</strong> U of T engineering is the most grade-competitive program in Ontario. The supplemental matters, but grades are the primary filter. If you're below 90%, focus on other strong Ontario programs alongside U of T rather than treating it as your main target.</div>
         </div>
       </div>
 
       <!-- QUEENS -->
-      <div class="uni-card" id="queens">
-        <div class="uni-header" onclick="toggleUni('queens')">
-          <div class="uni-initial" style="background:#EEEDFE; color:#534AB7;">QU</div>
-          <div class="uni-header-text">
-            <div class="uni-name">Queen's University</div>
-            <div class="uni-sub">Kingston, Ontario · Strong engineering culture and community</div>
+      <div class="uni-card" id="queens" data-r data-d="1">
+        <div class="uni-inner">
+          <div class="uni-header" onclick="toggleUni('queens')">
+            <div class="uni-initial" style="background:#EEEDFE; color:#534AB7;">QU</div>
+            <div class="uni-header-text"><div class="uni-name">Queen's University</div><div class="uni-sub">Kingston, Ontario · Strong engineering culture and community</div></div>
+            <div class="uni-badges"><span class="badge" style="background:#EEEDFE; color:#534AB7;">Strong community</span><span class="badge" style="background:#EAF3EC; color:#1B4332;">Co-op available</span></div>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div class="uni-badges">
-            <span class="badge" style="background:#EEEDFE; color:#534AB7;">Strong community</span>
-            <span class="badge" style="background:#EAF3EC; color:#1B4332;">Co-op available</span>
+          <div class="uni-body">
+            <div class="info-grid">
+              <div class="info-box"><div class="info-box-label">Required courses (Ontario)</div><ul><li>Advanced Functions (MHF4U)</li><li>Calculus &amp; Vectors (MCV4U)</li><li>Chemistry (SCH4U)</li><li>Physics (SPH4U)</li><li>English (ENG4U)</li><li>One additional 4U/M course</li></ul></div>
+              <div class="info-box"><div class="info-box-label">Competitive average</div><div class="avg-range">Mid 80s–low 90s</div><div class="avg-note">Generally less cutthroat than Waterloo or U of T. Strong applicants typically sit in the 87–92% range.</div></div>
+              <div class="info-box"><div class="info-box-label">Co-op</div><p>Queen's offers optional co-op for most engineering programs. The engineering community and culture at Queen's is one of the strongest in Ontario — something worth considering beyond just grades.</p></div>
+              <div class="info-box"><div class="info-box-label">Application deadlines</div><ul><li>OUAC application: Feb 1</li><li>Supplemental: varies by program</li><li>Decisions: Rolling, Feb–May</li></ul></div>
+            </div>
+            <div class="supplemental-box"><div class="info-box-label">Supplemental</div><p>Some Queen's engineering programs require a supplemental application. Check the specific program you're applying to on the Queen's admissions site — requirements vary between departments.</p></div>
+            <div class="tip-box"><strong>Application tip:</strong> Queen's is often underrated by Ontario students chasing Waterloo and U of T. The engineering program is genuinely strong, the co-op placements are solid, and the community is tight-knit. Worth taking seriously as a target rather than just a backup.</div>
           </div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="uni-body">
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-box-label">Required courses (Ontario)</div>
-              <ul>
-                <li>Advanced Functions (MHF4U)</li>
-                <li>Calculus & Vectors (MCV4U)</li>
-                <li>Chemistry (SCH4U)</li>
-                <li>Physics (SPH4U)</li>
-                <li>English (ENG4U)</li>
-                <li>One additional 4U/M course</li>
-              </ul>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Competitive average</div>
-              <div class="avg-range">Mid 80s–low 90s</div>
-              <div class="avg-note">Generally less cutthroat than Waterloo or U of T. Strong applicants typically sit in the 87–92% range. Some programs more competitive than others.</div>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Co-op</div>
-              <p>Queen's offers optional co-op for most engineering programs. The engineering community and culture at Queen's is one of the strongest in Ontario — something worth considering beyond just grades.</p>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Application deadlines</div>
-              <ul>
-                <li>OUAC application: Feb 1</li>
-                <li>Supplemental: varies by program</li>
-                <li>Decisions: Rolling, Feb–May</li>
-              </ul>
-            </div>
-          </div>
-          <div class="supplemental-box">
-            <div class="info-box-label">Supplemental</div>
-            <p>Some Queen's engineering programs require a supplemental application. Check the specific program you're applying to on the Queen's admissions site — requirements vary between departments.</p>
-          </div>
-          <div class="tip-box"><strong>Application tip:</strong> Queen's is often underrated by Ontario students chasing Waterloo and U of T. The engineering program is genuinely strong, the co-op placements are solid, and the community is tight-knit. Worth taking seriously as a target rather than just a backup.</div>
         </div>
       </div>
 
       <!-- MCMASTER -->
-      <div class="uni-card" id="mcmaster">
-        <div class="uni-header" onclick="toggleUni('mcmaster')">
-          <div class="uni-initial" style="background:#FDE8E8; color:#9B1C1C;">MC</div>
-          <div class="uni-header-text">
-            <div class="uni-name">McMaster University</div>
-            <div class="uni-sub">Hamilton, Ontario · Known for problem-based learning</div>
+      <div class="uni-card" id="mcmaster" data-r data-d="1">
+        <div class="uni-inner">
+          <div class="uni-header" onclick="toggleUni('mcmaster')">
+            <div class="uni-initial" style="background:#FDE8E8; color:#9B1C1C;">MC</div>
+            <div class="uni-header-text"><div class="uni-name">McMaster University</div><div class="uni-sub">Hamilton, Ontario · Known for problem-based learning</div></div>
+            <div class="uni-badges"><span class="badge" style="background:#FDE8E8; color:#9B1C1C;">Problem-based</span><span class="badge" style="background:#EAF3EC; color:#1B4332;">Co-op available</span></div>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div class="uni-badges">
-            <span class="badge" style="background:#FDE8E8; color:#9B1C1C;">Problem-based</span>
-            <span class="badge" style="background:#EAF3EC; color:#1B4332;">Co-op available</span>
+          <div class="uni-body">
+            <div class="info-grid">
+              <div class="info-box"><div class="info-box-label">Required courses (Ontario)</div><ul><li>Advanced Functions (MHF4U)</li><li>Calculus &amp; Vectors (MCV4U)</li><li>Chemistry (SCH4U)</li><li>Physics (SPH4U)</li><li>English (ENG4U)</li><li>One additional 4U/M course</li></ul></div>
+              <div class="info-box"><div class="info-box-label">Competitive average</div><div class="avg-range">Mid 80s–low 90s</div><div class="avg-note">McMaster makes rolling offers from late February to May. Applying early with strong mid-year grades improves your chances of an early offer.</div></div>
+              <div class="info-box"><div class="info-box-label">Co-op</div><p>McMaster offers co-op for most engineering programs. The Engineering &amp; Management program (a combined degree) is a popular and distinctive option not offered at most other schools.</p></div>
+              <div class="info-box"><div class="info-box-label">Application deadlines</div><ul><li>OUAC application: Feb 1</li><li>Offers: Late Feb – May (rolling)</li><li>By-Selection programs: May</li></ul></div>
+            </div>
+            <div class="supplemental-box"><div class="info-box-label">Supplemental</div><p>Most McMaster engineering programs require supplementary application information. By-Selection programs have additional requirements. Check McMaster's admissions site for the specific supplemental for your target program.</p></div>
+            <div class="tip-box"><strong>Application tip:</strong> McMaster's rolling admissions means strong mid-year grades can get you an offer before your final marks are in. You can apply to up to 3 McMaster programs on one OUAC application.</div>
           </div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="uni-body">
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-box-label">Required courses (Ontario)</div>
-              <ul>
-                <li>Advanced Functions (MHF4U)</li>
-                <li>Calculus & Vectors (MCV4U)</li>
-                <li>Chemistry (SCH4U)</li>
-                <li>Physics (SPH4U)</li>
-                <li>English (ENG4U)</li>
-                <li>One additional 4U/M course</li>
-              </ul>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Competitive average</div>
-              <div class="avg-range">Mid 80s–low 90s</div>
-              <div class="avg-note">McMaster makes rolling offers from late February to May. Applying early with strong mid-year grades improves your chances of an early offer.</div>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Co-op</div>
-              <p>McMaster offers co-op for most engineering programs. The Engineering & Management program (a combined degree) is a popular and distinctive option not offered at most other schools.</p>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Application deadlines</div>
-              <ul>
-                <li>OUAC application: Feb 1</li>
-                <li>Offers: Late Feb – May (rolling)</li>
-                <li>By-Selection programs: May</li>
-              </ul>
-            </div>
-          </div>
-          <div class="supplemental-box">
-            <div class="info-box-label">Supplemental</div>
-            <p>Most McMaster engineering programs require supplementary application information. By-Selection programs (specialized streams selected after first year) have additional requirements. Check McMaster's admissions site for the specific supplemental for your target program.</p>
-          </div>
-          <div class="tip-box"><strong>Application tip:</strong> McMaster's rolling admissions means strong mid-year grades can get you an offer before your final marks are in. If you're sitting well in February, this works in your favour. You can apply to up to 3 McMaster programs on one OUAC application.</div>
         </div>
       </div>
 
       <!-- WESTERN -->
-      <div class="uni-card" id="western">
-        <div class="uni-header" onclick="toggleUni('western')">
-          <div class="uni-initial" style="background:#FAEEDA; color:#854F0B;">WU</div>
-          <div class="uni-header-text">
-            <div class="uni-name">Western University</div>
-            <div class="uni-sub">London, Ontario · Strong research and campus life</div>
+      <div class="uni-card" id="western" data-r data-d="1">
+        <div class="uni-inner">
+          <div class="uni-header" onclick="toggleUni('western')">
+            <div class="uni-initial" style="background:#FAEEDA; color:#854F0B;">WU</div>
+            <div class="uni-header-text"><div class="uni-name">Western University</div><div class="uni-sub">London, Ontario · Strong research and campus life</div></div>
+            <div class="uni-badges"><span class="badge" style="background:#FAEEDA; color:#854F0B;">Min 85% avg</span><span class="badge" style="background:#EAF3EC; color:#1B4332;">Co-op available</span></div>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div class="uni-badges">
-            <span class="badge" style="background:#FAEEDA; color:#854F0B;">Min 85% avg</span>
-            <span class="badge" style="background:#EAF3EC; color:#1B4332;">Co-op available</span>
+          <div class="uni-body">
+            <div class="info-grid">
+              <div class="info-box"><div class="info-box-label">Required courses (Ontario)</div><ul><li>Advanced Functions (MHF4U)</li><li>Calculus &amp; Vectors (MCV4U)</li><li>Chemistry (SCH4U)</li><li>Physics (SPH4U)</li><li>English (ENG4U)</li><li>One additional 4U/M course</li></ul></div>
+              <div class="info-box"><div class="info-box-label">Competitive average</div><div class="avg-range">85%+ (mid-year and final)</div><div class="avg-note">Western requires a minimum 85% mid-year and final average including prerequisites. This is one of the few schools that explicitly states a minimum. Competitive offers typically go to students in the high 80s–low 90s.</div></div>
+              <div class="info-box"><div class="info-box-label">Co-op</div><p>Western Engineering offers optional co-op. The Engineering Excellence scholarship stream is available to students who maintain an 80% average in first year.</p></div>
+              <div class="info-box"><div class="info-box-label">Application deadlines</div><ul><li>OUAC application: Feb 1</li><li>Decisions: Rolling, March–May</li></ul></div>
+            </div>
+            <div class="tip-box"><strong>Application tip:</strong> Western explicitly requires 85% mid-year — not just final. Make sure your mid-year marks in the required courses reflect that before you apply.</div>
           </div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="uni-body">
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-box-label">Required courses (Ontario)</div>
-              <ul>
-                <li>Advanced Functions (MHF4U)</li>
-                <li>Calculus & Vectors (MCV4U)</li>
-                <li>Chemistry (SCH4U)</li>
-                <li>Physics (SPH4U)</li>
-                <li>English (ENG4U)</li>
-                <li>One additional 4U/M course</li>
-              </ul>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Competitive average</div>
-              <div class="avg-range">85%+ (mid-year and final)</div>
-              <div class="avg-note">Western requires a minimum 85% mid-year and final average including prerequisites. This is one of the few schools that explicitly states a minimum. Competitive offers typically go to students in the high 80s–low 90s.</div>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Co-op</div>
-              <p>Western Engineering offers optional co-op. The Engineering Excellence scholarship stream is available to students who maintain an 80% average in first year.</p>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Application deadlines</div>
-              <ul>
-                <li>OUAC application: Feb 1</li>
-                <li>Decisions: Rolling, March–May</li>
-              </ul>
-            </div>
-          </div>
-          <div class="tip-box"><strong>Application tip:</strong> Western explicitly requires 85% mid-year — not just final. Make sure your mid-year marks in the required courses reflect that before you apply. Falling short mid-year can affect offer timing even if your finals are strong.</div>
         </div>
       </div>
     </div>
 
     <!-- BC -->
     <div class="province-section" id="bc">
-      <div class="province-label">
+      <div class="province-label" data-r>
         <div class="province-flag">🏔</div>
         <h2>British Columbia</h2>
-        <div class="p-note">Apply via UBC Apply or BCIT · Deadline Jan 15</div>
+        <div class="p-note">Apply via UBC Apply · Deadline Jan 15</div>
       </div>
 
       <!-- UBC -->
-      <div class="uni-card" id="ubc">
-        <div class="uni-header" onclick="toggleUni('ubc')">
-          <div class="uni-initial" style="background:#E6F1FB; color:#185FA5;">UB</div>
-          <div class="uni-header-text">
-            <div class="uni-name">University of British Columbia</div>
-            <div class="uni-sub">Vancouver, BC · Top 5 engineering program in Canada</div>
+      <div class="uni-card" id="ubc" data-r data-d="1">
+        <div class="uni-inner">
+          <div class="uni-header" onclick="toggleUni('ubc')">
+            <div class="uni-initial" style="background:#E6F1FB; color:#185FA5;">UB</div>
+            <div class="uni-header-text"><div class="uni-name">University of British Columbia</div><div class="uni-sub">Vancouver, BC · Top 5 engineering program in Canada</div></div>
+            <div class="uni-badges"><span class="badge" style="background:#E6F1FB; color:#185FA5;">Top ranked</span><span class="badge" style="background:#EAF3EC; color:#1B4332;">Co-op available</span></div>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div class="uni-badges">
-            <span class="badge" style="background:#E6F1FB; color:#185FA5;">Top ranked</span>
-            <span class="badge" style="background:#EAF3EC; color:#1B4332;">Co-op available</span>
+          <div class="uni-body">
+            <div class="info-grid">
+              <div class="info-box"><div class="info-box-label">Required courses (Ontario students)</div><ul><li>Advanced Functions (MHF4U)</li><li>Calculus &amp; Vectors (MCV4U)</li><li>Physics (SPH4U)</li><li>Chemistry (SCH4U)</li><li>English (ENG4U)</li></ul></div>
+              <div class="info-box"><div class="info-box-label">Competitive average</div><div class="avg-range">90%+</div><div class="avg-note">Minimum is around 80% but UBC engineering is heavily oversubscribed. Realistically, aim for 90%+ to be competitive. Selection is based purely on academic standing in the required courses.</div></div>
+              <div class="info-box"><div class="info-box-label">How UBC engineering works</div><p>All students enter a common first year before choosing their specialization through the Engineering Program Placement process. You pick your branch after first year based on your GPA and preferences.</p></div>
+              <div class="info-box"><div class="info-box-label">Application deadline</div><ul><li>Application deadline: Jan 15</li><li>No supplemental application required</li><li>Decisions: Feb–April</li></ul></div>
+            </div>
+            <div class="tip-box"><strong>Application tip:</strong> UBC does not require a supplemental application — it's purely grade-based. This makes your average the only lever you can pull. Strong students from Ontario who apply with 90%+ in the required courses are competitive.</div>
           </div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="uni-body">
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-box-label">Required courses (BC students)</div>
-              <ul>
-                <li>Pre-Calculus 12 or Calculus 12</li>
-                <li>Physics 12</li>
-                <li>Chemistry 12</li>
-                <li>English 12</li>
-              </ul>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Required courses (Ontario students)</div>
-              <ul>
-                <li>Advanced Functions (MHF4U)</li>
-                <li>Calculus & Vectors (MCV4U)</li>
-                <li>Physics (SPH4U)</li>
-                <li>Chemistry (SCH4U)</li>
-                <li>English (ENG4U)</li>
-              </ul>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Competitive average</div>
-              <div class="avg-range">90%+</div>
-              <div class="avg-note">Minimum is around 80% but UBC engineering is heavily oversubscribed. Realistically, aim for 90%+ to be competitive. Selection is based purely on academic standing in the required courses.</div>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">How UBC engineering works</div>
-              <p>All students enter a common first year before choosing their specialization through the Engineering Program Placement process. You pick your branch after first year based on your GPA and preferences.</p>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Co-op</div>
-              <p>Co-op is available across most UBC engineering programs and is popular with employers in BC's tech and resource sectors.</p>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Application deadline</div>
-              <ul>
-                <li>Application deadline: Jan 15</li>
-                <li>No supplemental application required</li>
-                <li>Decisions: Feb–April</li>
-              </ul>
-            </div>
-          </div>
-          <div class="tip-box"><strong>Application tip:</strong> UBC does not require a supplemental application — it's purely grade-based. This makes your average the only lever you can pull. Strong students from Ontario who apply with 90%+ in the required courses are competitive. If you're an Ontario student seriously considering UBC, make sure your Gr 12 science and math marks are your strongest.</div>
         </div>
       </div>
     </div>
 
     <!-- QUEBEC + OTHER -->
     <div class="province-section" id="other">
-      <div class="province-label">
+      <div class="province-label" data-r>
         <div class="province-flag">🍂</div>
-        <h2>Quebec & Other Provinces</h2>
+        <h2>Quebec &amp; Other Provinces</h2>
         <div class="p-note">Apply directly to each university</div>
       </div>
 
       <!-- MCGILL -->
-      <div class="uni-card" id="mcgill">
-        <div class="uni-header" onclick="toggleUni('mcgill')">
-          <div class="uni-initial" style="background:#FDE8E8; color:#9B1C1C;">MG</div>
-          <div class="uni-header-text">
-            <div class="uni-name">McGill University</div>
-            <div class="uni-sub">Montreal, Quebec · Often called "the Harvard of Canada"</div>
+      <div class="uni-card" id="mcgill" data-r data-d="1">
+        <div class="uni-inner">
+          <div class="uni-header" onclick="toggleUni('mcgill')">
+            <div class="uni-initial" style="background:#FDE8E8; color:#9B1C1C;">MG</div>
+            <div class="uni-header-text"><div class="uni-name">McGill University</div><div class="uni-sub">Montreal, Quebec · Often called "the Harvard of Canada"</div></div>
+            <div class="uni-badges"><span class="badge" style="background:#FDE8E8; color:#9B1C1C;">Highly competitive</span><span class="badge" style="background:#E6F1FB; color:#185FA5;">Research-focused</span></div>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div class="uni-badges">
-            <span class="badge" style="background:#FDE8E8; color:#9B1C1C;">Highly competitive</span>
-            <span class="badge" style="background:#E6F1FB; color:#185FA5;">Research-focused</span>
+          <div class="uni-body">
+            <div class="info-grid">
+              <div class="info-box"><div class="info-box-label">Required courses (Ontario students)</div><ul><li>Advanced Functions (MHF4U)</li><li>Calculus &amp; Vectors (MCV4U)</li><li>Chemistry (SCH4U)</li><li>Physics (SPH4U)</li><li>English (ENG4U)</li><li>One additional 4U/M course</li></ul></div>
+              <div class="info-box"><div class="info-box-label">Competitive average (Ontario students)</div><div class="avg-range">High 80s–high 90s</div><div class="avg-note">Varies significantly by engineering program. Check McGill's site for the most recent reference grades by program.</div></div>
+              <div class="info-box"><div class="info-box-label">Note for Quebec applicants</div><p>Quebec CEGEP students are evaluated on R-score, not percentage averages. Ontario students applying to McGill are assessed on their Top 6 4U/M course average.</p></div>
+              <div class="info-box"><div class="info-box-label">Application deadline</div><ul><li>Ontario applicants: Feb 1</li><li>No video interview required</li></ul></div>
+            </div>
+            <div class="tip-box"><strong>Application tip:</strong> McGill considers all academic results including failed or repeated courses. First-attempt marks matter. Unlike U of T or Waterloo, McGill's evaluation for engineering is primarily academic — there is no major supplemental essay component for most programs.</div>
           </div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="uni-body">
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-box-label">Required courses (Ontario students)</div>
-              <ul>
-                <li>Advanced Functions (MHF4U)</li>
-                <li>Calculus & Vectors (MCV4U)</li>
-                <li>Chemistry (SCH4U)</li>
-                <li>Physics (SPH4U)</li>
-                <li>English (ENG4U)</li>
-                <li>One additional 4U/M course</li>
-              </ul>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Competitive average (Ontario students)</div>
-              <div class="avg-range">High 80s–high 90s</div>
-              <div class="avg-note">Varies significantly by engineering program — some specializations have historically used averages from 85% to above 98%. Check McGill's site for the most recent reference grades by program.</div>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Note for Quebec applicants</div>
-              <p>Quebec CEGEP students are evaluated on R-score, not percentage averages. Ontario students applying to McGill are assessed on their Top 6 4U/M course average and do not need a CEGEP diploma.</p>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Application deadline</div>
-              <ul>
-                <li>Ontario applicants: Feb 1</li>
-                <li>Supporting documents: varies</li>
-                <li>No video interview required</li>
-              </ul>
-            </div>
-          </div>
-          <div class="tip-box"><strong>Application tip:</strong> McGill considers all academic results including failed or repeated courses. First-attempt marks matter. Unlike U of T's OSP or Waterloo's AIF, McGill's evaluation for engineering is primarily academic — there is no major supplemental essay component for most engineering programs.</div>
         </div>
       </div>
 
       <!-- U ALBERTA -->
-      <div class="uni-card" id="ualberta">
-        <div class="uni-header" onclick="toggleUni('ualberta')">
-          <div class="uni-initial" style="background:#EAF3EC; color:#1B4332;">UA</div>
-          <div class="uni-header-text">
-            <div class="uni-name">University of Alberta</div>
-            <div class="uni-sub">Edmonton, Alberta · Top pick for Chemical Engineering</div>
+      <div class="uni-card" id="ualberta" data-r data-d="1">
+        <div class="uni-inner">
+          <div class="uni-header" onclick="toggleUni('ualberta')">
+            <div class="uni-initial" style="background:#EAF3EC; color:#1B4332;">UA</div>
+            <div class="uni-header-text"><div class="uni-name">University of Alberta</div><div class="uni-sub">Edmonton, Alberta · Top pick for Chemical Engineering</div></div>
+            <div class="uni-badges"><span class="badge" style="background:#EAF3EC; color:#1B4332;">Chemical Eng</span><span class="badge" style="background:#FAEEDA; color:#854F0B;">Co-op available</span></div>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div class="uni-badges">
-            <span class="badge" style="background:#EAF3EC; color:#1B4332;">Chemical Eng</span>
-            <span class="badge" style="background:#FAEEDA; color:#854F0B;">Co-op available</span>
+          <div class="uni-body">
+            <div class="info-grid">
+              <div class="info-box"><div class="info-box-label">Required courses (Ontario equivalents)</div><ul><li>English (ENG4U)</li><li>Mathematics with Calculus (MCV4U)</li><li>Physics (SPH4U)</li><li>Chemistry (SCH4U)</li></ul></div>
+              <div class="info-box"><div class="info-box-label">Competitive average</div><div class="avg-range">Mid 80s–low 90s</div><div class="avg-note">Generally less grade-competitive than Waterloo or U of T. Chemical Engineering at U of A is particularly strong due to ties with Alberta's energy sector.</div></div>
+              <div class="info-box"><div class="info-box-label">Why consider U of A</div><p>For Chemical Engineering specifically, U of A's industry connections — particularly in oil, gas, and clean energy — are unmatched in Canada. If that's your branch, it's worth putting on your list even as an Ontario student.</p></div>
+              <div class="info-box"><div class="info-box-label">Application</div><ul><li>Apply directly via ualberta.ca</li><li>Deadline: March 1 (most programs)</li><li>Co-op and internship options available</li></ul></div>
+            </div>
+            <div class="tip-box"><strong>Application tip:</strong> As an Ontario student applying out of province, your OUAC transcript is sent directly. U of A evaluates Ontario students on their Top 6 4U/M average. No supplemental required for most engineering programs.</div>
           </div>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="uni-body">
-          <div class="info-grid">
-            <div class="info-box">
-              <div class="info-box-label">Required courses (Ontario equivalents)</div>
-              <ul>
-                <li>English (ENG4U)</li>
-                <li>Mathematics with Calculus (MCV4U)</li>
-                <li>Physics (SPH4U)</li>
-                <li>Chemistry (SCH4U)</li>
-              </ul>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Competitive average</div>
-              <div class="avg-range">Mid 80s–low 90s</div>
-              <div class="avg-note">Generally less grade-competitive than Waterloo or U of T. Strong applicants sit in the high 80s. Chemical Engineering at U of A is particularly strong due to ties with Alberta's energy sector.</div>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Why consider U of A</div>
-              <p>For Chemical Engineering specifically, U of A's industry connections — particularly in oil, gas, and clean energy — are unmatched in Canada. If that's your branch, it's worth putting on your list even as an Ontario student.</p>
-            </div>
-            <div class="info-box">
-              <div class="info-box-label">Application</div>
-              <ul>
-                <li>Apply directly via ualberta.ca</li>
-                <li>Deadline: March 1 (most programs)</li>
-                <li>Co-op and internship options available</li>
-              </ul>
-            </div>
-          </div>
-          <div class="tip-box"><strong>Application tip:</strong> As an Ontario student applying out of province, your OUAC transcript is sent directly. U of A evaluates Ontario students on their Top 6 4U/M average using the same required courses as Ontario schools. No supplemental required for most engineering programs.</div>
         </div>
       </div>
     </div>
@@ -709,37 +460,34 @@
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="founder-sidebar">
+    <div class="founder-card">
       <h4>From the founder</h4>
       <p>"This page is the one I actually needed when I started researching. No more jumping between 8 different university websites."</p>
     </div>
-
-    <div class="warning-box">
+    <div class="warning-card">
       <h4>⚠ Always verify</h4>
-      <p>Requirements change year to year. Always confirm on each university's official admissions site before your application cycle. This page was last updated for 2025–26.</p>
+      <p>Requirements change year to year. Always confirm on each university's official admissions site before your application cycle. Last updated for 2025–26.</p>
     </div>
-
     <div class="sidebar-card">
       <h4>Jump to university</h4>
-      <div onclick="openUni('waterloo')" class="sidebar-nav-link">Waterloo</div>
-      <div onclick="openUni('uoft')" class="sidebar-nav-link">U of T</div>
-      <div onclick="openUni('queens')" class="sidebar-nav-link">Queen's</div>
-      <div onclick="openUni('mcmaster')" class="sidebar-nav-link">McMaster</div>
-      <div onclick="openUni('western')" class="sidebar-nav-link">Western</div>
-      <div onclick="openUni('ubc')" class="sidebar-nav-link">UBC (BC)</div>
-      <div onclick="openUni('mcgill')" class="sidebar-nav-link">McGill (QC)</div>
-      <div onclick="openUni('ualberta')" class="sidebar-nav-link">U of Alberta</div>
+      <div onclick="openUni('waterloo')" class="snl">Waterloo</div>
+      <div onclick="openUni('uoft')" class="snl">U of T</div>
+      <div onclick="openUni('queens')" class="snl">Queen's</div>
+      <div onclick="openUni('mcmaster')" class="snl">McMaster</div>
+      <div onclick="openUni('western')" class="snl">Western</div>
+      <div onclick="openUni('ubc')" class="snl">UBC (BC)</div>
+      <div onclick="openUni('mcgill')" class="snl">McGill (QC)</div>
+      <div onclick="openUni('ualberta')" class="snl">U of Alberta</div>
     </div>
-
     <div class="sidebar-card">
       <h4>Courses needed everywhere</h4>
-      <div style="display:flex; flex-direction:column; gap:0.35rem; margin-top:0.25rem;">
-        <div style="font-size:12px; color:var(--text-muted);">✓ Advanced Functions</div>
-        <div style="font-size:12px; color:var(--text-muted);">✓ Calculus & Vectors</div>
-        <div style="font-size:12px; color:var(--text-muted);">✓ Physics</div>
-        <div style="font-size:12px; color:var(--text-muted);">✓ Chemistry</div>
-        <div style="font-size:12px; color:var(--text-muted);">✓ English</div>
-        <div style="font-size:11px; color:var(--text-faint); margin-top:0.3rem;">Don't drop any of these.</div>
+      <div class="courses-checklist">
+        <div class="cc-item">Advanced Functions</div>
+        <div class="cc-item">Calculus &amp; Vectors</div>
+        <div class="cc-item">Physics</div>
+        <div class="cc-item">Chemistry</div>
+        <div class="cc-item">English</div>
+        <div style="font-size:11px; color:var(--text-3); margin-top:0.3rem; padding-left:4px;">Don't drop any of these.</div>
       </div>
     </div>
   </div>
@@ -751,14 +499,20 @@
 </footer>
 
 <script>
-  function toggleUni(id) {
-    document.getElementById(id).classList.toggle('open');
-  }
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 10), { passive: true });
+
+  function toggleUni(id) { document.getElementById(id).classList.toggle('open'); }
   function openUni(id) {
     const card = document.getElementById(id);
     if (!card.classList.contains('open')) card.classList.add('open');
     setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-r]').forEach(el => io.observe(el));
 </script>
 </body>
 </html>

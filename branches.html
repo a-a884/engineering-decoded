@@ -10,381 +10,215 @@
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --green: #2D6A4F;
-    --green-light: #EAF3EC;
-    --green-mid: #74B89A;
-    --green-dark: #1B4332;
-    --text: #1a1a18;
-    --text-muted: #5F5E5A;
-    --text-faint: #888780;
-    --bg: #fafaf8;
-    --bg-card: #ffffff;
-    --border: rgba(0,0,0,0.08);
-    --border-strong: rgba(0,0,0,0.14);
-    --blue-bg: #E6F1FB;
-    --blue-text: #185FA5;
-    --purple-bg: #EEEDFE;
-    --purple-text: #534AB7;
-    --amber-bg: #FAEEDA;
-    --amber-text: #854F0B;
-    --red-bg: #FDE8E8;
-    --red-text: #9B1C1C;
-    --teal-bg: #E0F2F1;
-    --teal-text: #00695C;
+    --green: #2D6A4F; --green-light: #EAF3EC; --green-mid: #74B89A; --green-dark: #1B4332;
+    --dark: #0D1410; --dark-s: #131b16; --dark-b: rgba(116,184,154,0.11);
+    --text: #1a1a18; --text-2: #5F5E5A; --text-3: #6B6A65;
+    --bg: #fafaf8; --card: #ffffff;
+    --border: rgba(0,0,0,0.07); --border-s: rgba(0,0,0,0.12);
+    --e1: cubic-bezier(0.25, 1, 0.5, 1);
+    --e2: cubic-bezier(0.16, 1, 0.3, 1);
+    --e3: cubic-bezier(0.32, 0.72, 0, 1);
+    --blue-bg: #E6F1FB; --blue-text: #185FA5;
+    --purple-bg: #EEEDFE; --purple-text: #534AB7;
+    --amber-bg: #FAEEDA; --amber-text: #854F0B;
+    --red-bg: #FDE8E8; --red-text: #9B1C1C;
+    --teal-bg: #E0F2F1; --teal-text: #00695C;
   }
 
   html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    font-size: 16px;
-    line-height: 1.7;
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.025;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='250' height='250'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size: 250px 250px;
   }
 
-  /* NAV */
+  /* ── NAV ── */
   nav {
     position: sticky; top: 0; z-index: 100;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
+    background: var(--bg); border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 3rem;
+    padding: 1rem 3rem; transition: box-shadow 250ms var(--e1);
   }
-
-  .logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.2rem; color: var(--text);
-    text-decoration: none;
-  }
+  nav.scrolled { box-shadow: 0 1px 24px rgba(0,0,0,0.07); }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--text); text-decoration: none; }
   .logo span { color: var(--green); }
-
   .nav-links { display: flex; gap: 2rem; align-items: center; }
-  .nav-links a {
-    font-size: 13px; color: var(--text-muted);
-    text-decoration: none; transition: color 0.2s;
-  }
+  .nav-links a { font-size: 13px; color: var(--text-2); text-decoration: none; transition: color 150ms var(--e1); }
   .nav-links a:hover { color: var(--text); }
   .nav-links a.active { color: var(--text); font-weight: 500; }
 
-  /* PAGE HEADER */
-  .page-header {
-    padding: 4.5rem 3rem 3rem;
-    max-width: 760px;
-    animation: fadeUp 0.5s ease both;
+  /* ── PAGE BANNER (dark compact) ── */
+  .page-banner {
+    background: var(--dark); padding: 4rem 3rem 3.5rem;
+    position: relative; overflow: hidden;
   }
-
-  .page-tag {
+  .page-banner::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(116,184,154,0.07) 1px,transparent 1px), linear-gradient(90deg,rgba(116,184,154,0.07) 1px,transparent 1px);
+    background-size: 48px 48px; pointer-events: none;
+  }
+  .page-banner::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 120% 80% at 100% 50%, transparent 40%, var(--dark) 80%);
+    pointer-events: none;
+  }
+  .banner-inner { position: relative; z-index: 1; max-width: 680px; animation: slideUp 0.6s 0.1s var(--e2) both; }
+  .page-eyebrow {
     display: inline-flex; align-items: center; gap: 6px;
-    font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
-    color: var(--green); background: var(--green-light);
-    padding: 0.3rem 0.8rem; border-radius: 20px;
-    margin-bottom: 1.25rem;
+    font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--green-mid); background: rgba(116,184,154,0.1);
+    border: 1px solid rgba(116,184,154,0.2);
+    padding: 0.3rem 0.8rem; border-radius: 50px; margin-bottom: 1.25rem;
   }
+  .page-banner h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.12; letter-spacing: -0.025em; color: #ede9e0; text-wrap: balance; margin-bottom: 0.9rem; }
+  .page-banner h1 em { font-style: italic; color: var(--green-mid); }
+  .page-banner p { font-size: 14.5px; color: rgba(237,233,224,0.46); max-width: 520px; line-height: 1.75; }
 
-  .page-header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1.15; letter-spacing: -0.02em;
-    margin-bottom: 1rem;
-  }
-  .page-header h1 em { font-style: italic; color: var(--green); }
-
-  .page-header p {
-    font-size: 1rem; color: var(--text-muted);
-    max-width: 540px; line-height: 1.75;
-  }
-
-  /* PILLS */
-  .section-nav {
-    padding: 0 3rem 2.5rem;
-    display: flex; gap: 0.6rem; flex-wrap: wrap;
-    animation: fadeUp 0.5s 0.1s ease both;
-  }
-
+  /* ── PILLS ── */
+  .section-nav { padding: 0 3rem 2.5rem; display: flex; gap: 0.55rem; flex-wrap: wrap; padding-top: 2rem; }
   .pill {
-    font-size: 12px; font-weight: 500;
-    padding: 0.35rem 0.9rem; border-radius: 20px;
-    border: 1px solid var(--border-strong);
-    color: var(--text-muted); background: transparent;
+    font-size: 12px; font-weight: 500; padding: 0.35rem 0.9rem; border-radius: 50px;
+    border: 1px solid var(--border-s); color: var(--text-2); background: transparent;
     text-decoration: none; cursor: pointer;
-    transition: all 0.18s;
+    transition: background 150ms var(--e1), color 150ms var(--e1), border-color 150ms var(--e1);
   }
   .pill:hover { background: var(--green-light); color: var(--green); border-color: var(--green-mid); }
 
   .divider { height: 1px; background: var(--border); margin: 0 3rem; }
 
-  /* MAIN LAYOUT */
-  .main-layout {
-    display: grid;
-    grid-template-columns: 1fr 260px;
-    gap: 3rem;
-    padding: 3rem 3rem 5rem;
-    max-width: 1100px;
+  /* ── LAYOUT ── */
+  .main-layout { display: grid; grid-template-columns: 1fr 260px; gap: 3rem; padding: 3rem 3rem 5rem; max-width: 1100px; }
+
+  /* ── BRANCH CARD (accordion) ── */
+  .branch-card {
+    background: rgba(0,0,0,0.018); border: 1px solid var(--border);
+    border-radius: 20px; padding: 5px;
+    margin-bottom: 1.25rem; overflow: hidden;
+    transition: box-shadow 220ms var(--e1);
+  }
+  @media (hover:hover) and (pointer:fine) {
+    .branch-card:hover { box-shadow: 0 8px 30px rgba(45,106,79,0.09); }
   }
 
-  /* BRANCH CARD */
-  .branch-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-    transition: box-shadow 0.2s;
-    animation: fadeUp 0.5s ease both;
+  .branch-inner { background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,0.9); }
+
+  /* Visual header strip for each branch */
+  .branch-vis {
+    height: 0; overflow: hidden; position: relative;
+    transition: height 380ms var(--e3);
   }
-  .branch-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
-  .branch-card:nth-child(2) { animation-delay: 0.05s; }
-  .branch-card:nth-child(3) { animation-delay: 0.10s; }
-  .branch-card:nth-child(4) { animation-delay: 0.15s; }
-  .branch-card:nth-child(5) { animation-delay: 0.20s; }
-  .branch-card:nth-child(6) { animation-delay: 0.25s; }
+  .branch-card.open .branch-vis { height: 110px; }
+  .branch-vis-inner { position: absolute; inset: 0; display: flex; align-items: center; padding: 0 1.5rem; }
+  .branch-vis svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.15; }
+  .branch-vis-label { position: relative; z-index: 1; }
+  .bvl-tag { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.3rem; }
+  .bvl-name { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: rgba(255,255,255,0.85); letter-spacing: -0.01em; }
 
   .branch-header {
     display: flex; align-items: center; gap: 1rem;
-    padding: 1.5rem 1.75rem 1.25rem;
-    cursor: pointer;
+    padding: 1.35rem 1.5rem; cursor: pointer;
     border-bottom: 1px solid transparent;
-    transition: border-color 0.2s;
+    transition: border-color 200ms var(--e1);
+    user-select: none;
   }
   .branch-card.open .branch-header { border-bottom-color: var(--border); }
 
-  .branch-icon {
-    width: 44px; height: 44px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; flex-shrink: 0;
-  }
-
+  .branch-icon { width: 42px; height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; }
   .branch-header-text { flex: 1; min-width: 0; }
-
-  .branch-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem; font-weight: 400;
-    letter-spacing: -0.01em; line-height: 1.2;
-    margin-bottom: 0.2rem;
-  }
-
-  .branch-tagline {
-    font-size: 13px; color: var(--text-muted);
-  }
-
-  .branch-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-left: auto; padding-left: 1rem; }
-
-  .tag {
-    font-size: 11px; font-weight: 500;
-    padding: 0.2rem 0.6rem; border-radius: 20px;
-    white-space: nowrap;
-  }
-
-  .chevron {
-    width: 20px; height: 20px; flex-shrink: 0;
-    color: var(--text-faint);
-    transition: transform 0.25s ease;
-    margin-left: 0.5rem;
-  }
+  .branch-name { font-family: 'DM Serif Display', serif; font-size: 1.25rem; font-weight: 400; letter-spacing: -0.01em; line-height: 1.2; margin-bottom: 0.15rem; }
+  .branch-tagline { font-size: 13px; color: var(--text-2); }
+  .branch-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-left: auto; padding-left: 0.75rem; }
+  .tag { font-size: 11px; font-weight: 500; padding: 0.2rem 0.6rem; border-radius: 50px; white-space: nowrap; }
+  .chevron { width: 18px; height: 18px; flex-shrink: 0; color: var(--text-3); transition: transform 220ms var(--e1); margin-left: 0.5rem; }
   .branch-card.open .chevron { transform: rotate(180deg); }
 
-  /* BRANCH BODY */
   .branch-body {
-    display: none;
-    padding: 1.5rem 1.75rem 1.75rem;
+    max-height: 0; opacity: 0; overflow: hidden; padding: 0 1.5rem;
+    transition: max-height 460ms var(--e3), opacity 300ms var(--e1), padding 300ms var(--e3);
   }
-  .branch-card.open .branch-body { display: block; }
+  .branch-card.open .branch-body { max-height: 2400px; opacity: 1; padding: 1.5rem 1.5rem 1.75rem; }
 
-  .branch-overview {
-    font-size: 14.5px; color: var(--text-muted);
-    line-height: 1.75; margin-bottom: 1.5rem;
-    max-width: 600px;
-  }
+  .branch-overview { font-size: 14.5px; color: var(--text-2); line-height: 1.75; margin-bottom: 1.5rem; max-width: 580px; }
 
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .info-box {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 1rem 1.1rem;
-  }
-
-  .info-box-label {
-    font-size: 10.5px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
-    color: var(--text-faint); margin-bottom: 0.5rem;
-  }
-
-  .info-box ul {
-    list-style: none; padding: 0;
-  }
-
-  .info-box ul li {
-    font-size: 13px; color: var(--text-muted);
-    padding: 0.2rem 0;
-    border-bottom: 1px solid var(--border);
-    line-height: 1.5;
-  }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1rem; }
+  .info-box { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
+  .info-box-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.5rem; }
+  .info-box ul { list-style: none; }
+  .info-box ul li { font-size: 13px; color: var(--text-2); padding: 0.2rem 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
   .info-box ul li:last-child { border-bottom: none; }
+  .info-box p { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+  .salary-range { font-size: 1.1rem; font-weight: 500; color: var(--text); margin-bottom: 0.25rem; }
+  .salary-note { font-size: 12px; color: var(--text-3); }
+  .unis-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+  .uni-chip { font-size: 12px; font-weight: 500; padding: 0.25rem 0.7rem; border-radius: 6px; background: var(--green-light); color: var(--green-dark); border: 1px solid var(--green-mid); }
+  .founder-note-inline { background: var(--green-light); border-left: 3px solid var(--green); border-radius: 0 8px 8px 0; padding: 0.85rem 1rem; font-size: 13px; color: var(--green-dark); font-style: italic; line-height: 1.6; margin-top: 1rem; }
 
-  .info-box p {
-    font-size: 13px; color: var(--text-muted); line-height: 1.6;
-  }
-
-  .info-box .salary-range {
-    font-size: 1.1rem; font-weight: 500; color: var(--text);
-    margin-bottom: 0.25rem;
-  }
-
-  .info-box .salary-note {
-    font-size: 12px; color: var(--text-faint);
-  }
-
-  .unis-row {
-    display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;
-  }
-
-  .uni-chip {
-    font-size: 12px; font-weight: 500;
-    padding: 0.25rem 0.7rem; border-radius: 6px;
-    background: var(--green-light); color: var(--green-dark);
-    border: 1px solid var(--green-mid);
-  }
-
-  .founder-note-inline {
-    background: var(--green-light);
-    border-left: 3px solid var(--green);
-    border-radius: 0 8px 8px 0;
-    padding: 0.85rem 1rem;
-    font-size: 13px; color: var(--green-dark);
-    font-style: italic; line-height: 1.6;
-    margin-top: 1rem;
-  }
-
-  /* COMING SOON CARD */
+  /* Coming soon card */
   .coming-soon-card {
-    background: var(--bg-card);
-    border: 1px dashed var(--border-strong);
-    border-radius: 16px;
-    padding: 1.5rem 1.75rem;
-    margin-bottom: 1.5rem;
+    background: rgba(0,0,0,0.018); border: 1px dashed var(--border-s); border-radius: 16px;
+    padding: 1.35rem 1.5rem; margin-bottom: 1.1rem;
     display: flex; align-items: center; gap: 1rem;
   }
+  .cs-icon { width: 42px; height: 42px; border-radius: 11px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 19px; flex-shrink: 0; color: var(--text-3); }
+  .cs-text h4 { font-size: 14px; font-weight: 500; color: var(--text-2); margin-bottom: 0.2rem; }
+  .cs-text p { font-size: 13px; color: var(--text-3); }
 
-  .coming-soon-card .cs-icon {
-    width: 44px; height: 44px; border-radius: 12px;
-    background: var(--bg); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; flex-shrink: 0;
-    color: var(--text-faint);
-  }
-
-  .coming-soon-card .cs-text h4 {
-    font-size: 14px; font-weight: 500; color: var(--text-muted);
-    margin-bottom: 0.2rem;
-  }
-  .coming-soon-card .cs-text p {
-    font-size: 13px; color: var(--text-faint);
-  }
-
-  /* SIDEBAR */
+  /* ── SIDEBAR ── */
   .sidebar { position: sticky; top: 80px; align-self: start; }
+  .sidebar-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.35rem; margin-bottom: 1rem; }
+  .sidebar-card h4 { font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.9rem; }
+  .snl { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-2); text-decoration: none; padding: 0.35rem 0.75rem; border-left: 2px solid transparent; border-radius: 0 6px 6px 0; cursor: pointer; transition: color 150ms var(--e1), border-left-color 150ms var(--e1), background 150ms var(--e1); }
+  .snl:hover { color: var(--green); border-left-color: var(--green); background: var(--green-light); }
+  .snl-icon { width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+  .founder-card { background: var(--dark); border-radius: 14px; padding: 1.35rem; margin-bottom: 1rem; position: relative; overflow: hidden; }
+  .founder-card::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(116,184,154,0.05) 1px,transparent 1px), linear-gradient(90deg,rgba(116,184,154,0.05) 1px,transparent 1px); background-size: 28px 28px; }
+  .founder-card h4 { font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--green-mid); margin-bottom: 0.6rem; position: relative; z-index: 1; }
+  .founder-card p { font-size: 13px; color: rgba(237,233,224,0.5); line-height: 1.6; font-style: italic; position: relative; z-index: 1; }
+  .fit-card { background: var(--green-dark); border-radius: 14px; padding: 1.35rem; margin-bottom: 1rem; }
+  .fit-card h4 { font-size: 13px; font-weight: 500; color: var(--green-light); margin-bottom: 0.4rem; }
+  .fit-card p { font-size: 12.5px; color: rgba(234,243,236,0.55); line-height: 1.6; margin-bottom: 0.9rem; }
+  .fit-card a { font-size: 13px; font-weight: 500; color: var(--green-mid); text-decoration: none; }
+  .fit-card a:hover { text-decoration: underline; }
 
-  .sidebar-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.35rem;
-    margin-bottom: 1rem;
-  }
+  .salary-comp { display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.25rem; }
+  .sc-row { font-size: 12px; color: var(--text-2); display: flex; justify-content: space-between; align-items: center; }
+  .sc-row span:last-child { font-weight: 500; color: var(--text); }
 
-  .sidebar-card h4 {
-    font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--text-faint); margin-bottom: 0.9rem;
-  }
+  /* ── REVEAL & ANIMATIONS ── */
+  [data-r] { opacity: 0; transform: translateY(16px); transition: opacity 0.6s var(--e2), transform 0.6s var(--e2); }
+  [data-r].on { opacity: 1; transform: none; }
+  [data-r][data-d="1"] { transition-delay: 80ms; }
+  [data-r][data-d="2"] { transition-delay: 160ms; }
+  [data-r][data-d="3"] { transition-delay: 240ms; }
 
-  .sidebar-nav-link {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px; color: var(--text-muted);
-    text-decoration: none; padding: 0.35rem 0.75rem;
-    border-left: 2px solid transparent;
-    transition: all 0.15s; border-radius: 0 6px 6px 0;
-    cursor: pointer;
-  }
-  .sidebar-nav-link:hover { color: var(--green); border-left-color: var(--green); background: var(--green-light); }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-  .sidebar-nav-link .snl-icon {
-    width: 22px; height: 22px; border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; flex-shrink: 0;
-  }
-
-  .founder-sidebar {
-    background: var(--green-light);
-    border: 1px solid var(--green-mid);
-    border-radius: 14px; padding: 1.35rem;
-    margin-bottom: 1rem;
-  }
-
-  .founder-sidebar h4 {
-    font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--green-dark); margin-bottom: 0.6rem;
-  }
-
-  .founder-sidebar p {
-    font-size: 13px; color: var(--green-dark);
-    line-height: 1.6; font-style: italic;
-  }
-
-  .fit-cta {
-    background: #1a1a18;
-    border-radius: 14px; padding: 1.35rem;
-    margin-bottom: 1rem;
-  }
-
-  .fit-cta h4 {
-    font-size: 13px; font-weight: 500; color: #fff;
-    margin-bottom: 0.4rem;
-  }
-
-  .fit-cta p {
-    font-size: 12.5px; color: rgba(255,255,255,0.55);
-    line-height: 1.6; margin-bottom: 0.9rem;
-  }
-
-  .fit-cta a {
-    font-size: 13px; font-weight: 500;
-    color: var(--green-mid); text-decoration: none;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+    body::after { display: none; }
   }
 
   @media (max-width: 820px) {
     nav { padding: 1rem 1.5rem; }
     .nav-links { display: none; }
-    .page-header, .section-nav { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .page-banner { padding: 3rem 1.5rem 2.5rem; }
+    .section-nav { padding: 1.5rem 1.5rem 2rem; }
     .divider { margin: 0 1.5rem; }
     .main-layout { grid-template-columns: 1fr; padding: 2rem 1.5rem 4rem; gap: 0; }
     .sidebar { display: none; }
     .info-grid { grid-template-columns: 1fr; }
     .branch-tags { display: none; }
+    .branch-card.open .branch-vis { height: 80px; }
   }
 
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 1.5rem 3rem;
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 12px; color: var(--text-faint);
-  }
+  footer { border-top: 1px solid var(--border); padding: 1.5rem 3rem; display: flex; justify-content: space-between; font-size: 12px; color: var(--text-3); }
 </style>
 </head>
 <body>
 
-<nav>
+<nav id="mainNav">
   <a href="index.html" class="logo">Engineering <span>Decoded</span></a>
   <div class="nav-links">
     <a href="branches.html" class="active">Branches</a>
@@ -395,10 +229,13 @@
   </div>
 </nav>
 
-<div class="page-header">
-  <div class="page-tag">🔩 6 branches covered</div>
-  <h1>The branches of<br><em>engineering, decoded.</em></h1>
-  <p>Not sure which branch is for you? Read through each one — pay attention to which problems actually sound interesting to you, not just which career sounds impressive.</p>
+<!-- PAGE BANNER -->
+<div class="page-banner">
+  <div class="banner-inner">
+    <div class="page-eyebrow">🔩 6 branches covered</div>
+    <h1>The branches of<br><em>engineering, decoded.</em></h1>
+    <p>Not sure which branch is for you? Read through each one — pay attention to which problems actually sound interesting to you, not just which career sounds impressive.</p>
+  </div>
 </div>
 
 <div class="section-nav">
@@ -416,494 +253,327 @@
   <div class="content">
 
     <!-- MECHANICAL -->
-    <div class="branch-card open" id="mechanical">
-      <div class="branch-header" onclick="toggleBranch('mechanical')">
-        <div class="branch-icon" style="background:#EAF3EC; color:#2D6A4F;">⚙</div>
-        <div class="branch-header-text">
-          <div class="branch-name">Mechanical Engineering</div>
-          <div class="branch-tagline">The broadest branch there is.</div>
-        </div>
-        <div class="branch-tags">
-          <span class="tag" style="background:#EAF3EC; color:#1B4332;">My focus</span>
-          <span class="tag" style="background:#E6F1FB; color:#185FA5;">High demand</span>
-        </div>
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="branch-body">
-        <p class="branch-overview">If engineering had a "general" option, mechanical would be it. It covers anything that moves — engines, turbines, robots, HVAC systems, medical devices, manufacturing equipment, and more. The reason I'm drawn to it is that it sits at the intersection of physics, design, and real-world problem solving. You're not just running calculations; you're building things that actually exist.</p>
-
-        <div class="info-grid">
-          <div class="info-box">
-            <div class="info-box-label">Day to day</div>
-            <ul>
-              <li>Designing parts and assemblies in CAD</li>
-              <li>Running stress and heat simulations</li>
-              <li>Working with manufacturing teams</li>
-              <li>Testing prototypes and iterating</li>
-              <li>Writing engineering reports</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">First & second year courses</div>
-            <ul>
-              <li>Statics & Dynamics</li>
-              <li>Thermodynamics</li>
-              <li>Fluid Mechanics</li>
-              <li>Materials Science</li>
-              <li>Calculus & Physics</li>
-              <li>Engineering Drawing / CAD</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Career paths</div>
-            <ul>
-              <li>Automotive engineer</li>
-              <li>Robotics / automation engineer</li>
-              <li>Aerospace engineer</li>
-              <li>HVAC designer</li>
-              <li>Manufacturing engineer</li>
-              <li>Energy systems engineer</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Salary in Canada (2025)</div>
-            <div class="salary-range">$63K – $102K+</div>
-            <div class="salary-note">Entry-level to mid-career. Specialists in robotics and automation earn toward the higher end. Top earners reach $130K+.</div>
+    <div class="branch-card open" id="mechanical" data-r>
+      <div class="branch-inner">
+        <div class="branch-vis">
+          <div class="branch-vis-inner" style="background: linear-gradient(135deg, #0b1410 0%, #162b20 100%);">
+            <svg viewBox="0 0 600 110" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <circle cx="300" cy="55" r="40" stroke="#74B89A" stroke-width="1.5" stroke-dasharray="5 4"/>
+              <circle cx="300" cy="55" r="55" stroke="#74B89A" stroke-width="1"/>
+              <circle cx="300" cy="55" r="15" stroke="#74B89A" stroke-width="1.5"/>
+              <line x1="0" y1="55" x2="600" y2="55" stroke="#74B89A" stroke-width="0.5" stroke-dasharray="3 8"/>
+              <rect x="290" y="0" width="20" height="16" rx="3" stroke="#74B89A" stroke-width="1.3" transform="rotate(0 300 55)"/>
+              <rect x="290" y="0" width="20" height="16" rx="3" stroke="#74B89A" stroke-width="1.3" transform="rotate(45 300 55)"/>
+              <rect x="290" y="0" width="20" height="16" rx="3" stroke="#74B89A" stroke-width="1.3" transform="rotate(90 300 55)"/>
+              <rect x="290" y="0" width="20" height="16" rx="3" stroke="#74B89A" stroke-width="1.3" transform="rotate(135 300 55)"/>
+              <rect x="290" y="0" width="20" height="16" rx="3" stroke="#74B89A" stroke-width="1.3" transform="rotate(180 300 55)"/>
+              <rect x="290" y="0" width="20" height="16" rx="3" stroke="#74B89A" stroke-width="1.3" transform="rotate(225 300 55)"/>
+              <rect x="290" y="0" width="20" height="16" rx="3" stroke="#74B89A" stroke-width="1.3" transform="rotate(270 300 55)"/>
+              <rect x="290" y="0" width="20" height="16" rx="3" stroke="#74B89A" stroke-width="1.3" transform="rotate(315 300 55)"/>
+            </svg>
+            <div class="branch-vis-label">
+              <div class="bvl-tag">01 — My focus</div>
+              <div class="bvl-name">Mechanical Engineering</div>
+            </div>
           </div>
         </div>
-
-        <div class="info-box" style="margin-bottom:1rem;">
-          <div class="info-box-label">Strong Canadian universities</div>
-          <div class="unis-row">
-            <span class="uni-chip">University of Toronto</span>
-            <span class="uni-chip">University of Waterloo</span>
-            <span class="uni-chip">UBC</span>
-            <span class="uni-chip">Queen's</span>
-            <span class="uni-chip">McMaster</span>
+        <div class="branch-header" onclick="toggleBranch('mechanical')">
+          <div class="branch-icon" style="background:#EAF3EC; color:#2D6A4F;">⚙</div>
+          <div class="branch-header-text">
+            <div class="branch-name">Mechanical Engineering</div>
+            <div class="branch-tagline">The broadest branch there is.</div>
           </div>
+          <div class="branch-tags">
+            <span class="tag" style="background:#EAF3EC; color:#1B4332;">My focus</span>
+            <span class="tag" style="background:#E6F1FB; color:#185FA5;">High demand</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-
-        <div class="founder-note-inline">My pick. If you like how things physically work — machines, forces, heat — and want to design things that exist in the real world, mechanical is worth looking at seriously.</div>
+        <div class="branch-body">
+          <p class="branch-overview">If engineering had a "general" option, mechanical would be it. It covers anything that moves — engines, turbines, robots, HVAC systems, medical devices, manufacturing equipment, and more. The reason I'm drawn to it is that it sits at the intersection of physics, design, and real-world problem solving. You're not just running calculations; you're building things that actually exist.</p>
+          <div class="info-grid">
+            <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Designing parts and assemblies in CAD</li><li>Running stress and heat simulations</li><li>Working with manufacturing teams</li><li>Testing prototypes and iterating</li><li>Writing engineering reports</li></ul></div>
+            <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Statics &amp; Dynamics</li><li>Thermodynamics</li><li>Fluid Mechanics</li><li>Materials Science</li><li>Calculus &amp; Physics</li><li>Engineering Drawing / CAD</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Automotive engineer</li><li>Robotics / automation engineer</li><li>Aerospace engineer</li><li>HVAC designer</li><li>Manufacturing engineer</li><li>Energy systems engineer</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$63K – $102K+</div><div class="salary-note">Entry-level to mid-career. Specialists in robotics and automation earn toward the higher end. Top earners reach $130K+.</div></div>
+          </div>
+          <div class="info-box" style="margin-bottom:1rem;"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">University of Toronto</span><span class="uni-chip">University of Waterloo</span><span class="uni-chip">UBC</span><span class="uni-chip">Queen's</span><span class="uni-chip">McMaster</span></div></div>
+          <div class="founder-note-inline">My pick. If you like how things physically work — machines, forces, heat — and want to design things that exist in the real world, mechanical is worth looking at seriously.</div>
+        </div>
       </div>
     </div>
 
     <!-- CIVIL -->
-    <div class="branch-card" id="civil">
-      <div class="branch-header" onclick="toggleBranch('civil')">
-        <div class="branch-icon" style="background:#E6F1FB; color:#185FA5;">🏗</div>
-        <div class="branch-header-text">
-          <div class="branch-name">Civil Engineering</div>
-          <div class="branch-tagline">The branch that literally builds the world.</div>
-        </div>
-        <div class="branch-tags">
-          <span class="tag" style="background:#E6F1FB; color:#185FA5;">High demand</span>
-          <span class="tag" style="background:#EAF3EC; color:#1B4332;">Infrastructure</span>
-        </div>
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="branch-body">
-        <p class="branch-overview">Civil engineers design and build the infrastructure society runs on — roads, bridges, tunnels, dams, water treatment plants, airports, and buildings. It's one of the oldest engineering disciplines and one of the most visible. Every bridge you've crossed and every building you've walked into was signed off by a civil engineer.</p>
-
-        <div class="info-grid">
-          <div class="info-box">
-            <div class="info-box-label">Day to day</div>
-            <ul>
-              <li>Structural analysis and load calculations</li>
-              <li>Site surveys and inspections</li>
-              <li>Reading and producing technical drawings</li>
-              <li>Working with environmental regulations</li>
-              <li>Coordinating with architects and contractors</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">First & second year courses</div>
-            <ul>
-              <li>Statics & Structural Analysis</li>
-              <li>Soil Mechanics (Geotechnical)</li>
-              <li>Fluid Mechanics</li>
-              <li>Engineering Materials</li>
-              <li>Surveying</li>
-              <li>Environmental Engineering</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Career paths</div>
-            <ul>
-              <li>Structural engineer</li>
-              <li>Transportation engineer</li>
-              <li>Geotechnical engineer</li>
-              <li>Environmental engineer</li>
-              <li>Urban planner</li>
-              <li>Construction manager</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Salary in Canada (2025)</div>
-            <div class="salary-range">$75K – $115K+</div>
-            <div class="salary-note">Average sits around $93,900/yr nationally. Strong demand driven by infrastructure investment across Canada.</div>
+    <div class="branch-card" id="civil" data-r data-d="1">
+      <div class="branch-inner">
+        <div class="branch-vis">
+          <div class="branch-vis-inner" style="background: linear-gradient(135deg, #0c1320 0%, #142038 100%);">
+            <svg viewBox="0 0 600 110" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <line x1="0" y1="80" x2="600" y2="80" stroke="#6eb0f0" stroke-width="1.5"/>
+              <path d="M100 80 L200 30 L300 80" stroke="#6eb0f0" stroke-width="1.5" fill="none"/>
+              <path d="M300 80 L400 30 L500 80" stroke="#6eb0f0" stroke-width="1.5" fill="none"/>
+              <line x1="200" y1="30" x2="200" y2="80" stroke="#6eb0f0" stroke-width="1" stroke-dasharray="3 4"/>
+              <line x1="400" y1="30" x2="400" y2="80" stroke="#6eb0f0" stroke-width="1" stroke-dasharray="3 4"/>
+              <circle cx="200" cy="30" r="4" stroke="#6eb0f0" stroke-width="1.5"/>
+              <circle cx="400" cy="30" r="4" stroke="#6eb0f0" stroke-width="1.5"/>
+            </svg>
+            <div class="branch-vis-label">
+              <div class="bvl-tag">02 — Infrastructure</div>
+              <div class="bvl-name">Civil Engineering</div>
+            </div>
           </div>
         </div>
-
-        <div class="info-box">
-          <div class="info-box-label">Strong Canadian universities</div>
-          <div class="unis-row">
-            <span class="uni-chip">UBC</span>
-            <span class="uni-chip">University of Waterloo</span>
-            <span class="uni-chip">University of Toronto</span>
-            <span class="uni-chip">McGill</span>
-            <span class="uni-chip">Queen's</span>
+        <div class="branch-header" onclick="toggleBranch('civil')">
+          <div class="branch-icon" style="background:#E6F1FB; color:#185FA5;">🏗</div>
+          <div class="branch-header-text">
+            <div class="branch-name">Civil Engineering</div>
+            <div class="branch-tagline">The branch that literally builds the world.</div>
           </div>
+          <div class="branch-tags">
+            <span class="tag" style="background:#E6F1FB; color:#185FA5;">High demand</span>
+            <span class="tag" style="background:#EAF3EC; color:#1B4332;">Infrastructure</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="branch-body">
+          <p class="branch-overview">Civil engineers design and build the infrastructure society runs on — roads, bridges, tunnels, dams, water treatment plants, airports, and buildings. It's one of the oldest engineering disciplines and one of the most visible. Every bridge you've crossed and every building you've walked into was signed off by a civil engineer.</p>
+          <div class="info-grid">
+            <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Structural analysis and load calculations</li><li>Site surveys and inspections</li><li>Reading and producing technical drawings</li><li>Working with environmental regulations</li><li>Coordinating with architects and contractors</li></ul></div>
+            <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Statics &amp; Structural Analysis</li><li>Soil Mechanics (Geotechnical)</li><li>Fluid Mechanics</li><li>Engineering Materials</li><li>Surveying</li><li>Environmental Engineering</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Structural engineer</li><li>Transportation engineer</li><li>Geotechnical engineer</li><li>Environmental engineer</li><li>Urban planner</li><li>Construction manager</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$75K – $115K+</div><div class="salary-note">Average sits around $93,900/yr nationally. Strong demand driven by infrastructure investment across Canada.</div></div>
+          </div>
+          <div class="info-box"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">UBC</span><span class="uni-chip">University of Waterloo</span><span class="uni-chip">University of Toronto</span><span class="uni-chip">McGill</span><span class="uni-chip">Queen's</span></div></div>
         </div>
       </div>
     </div>
 
     <!-- ELECTRICAL -->
-    <div class="branch-card" id="electrical">
-      <div class="branch-header" onclick="toggleBranch('electrical')">
-        <div class="branch-icon" style="background:#FAEEDA; color:#854F0B;">⚡</div>
-        <div class="branch-header-text">
-          <div class="branch-name">Electrical Engineering</div>
-          <div class="branch-tagline">The branch behind everything that runs on power or sends a signal.</div>
-        </div>
-        <div class="branch-tags">
-          <span class="tag" style="background:#FAEEDA; color:#854F0B;">Math-heavy</span>
-          <span class="tag" style="background:#E6F1FB; color:#185FA5;">High demand</span>
-        </div>
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="branch-body">
-        <p class="branch-overview">Electrical engineers design and develop electrical systems — from the power grid that lights your city, to the circuits inside your phone, to the sensors in a self-driving car. It's a broad field with a heavy lean toward math and physics, and it bleeds into electronics, computing, and telecommunications.</p>
-
-        <div class="info-grid">
-          <div class="info-box">
-            <div class="info-box-label">Day to day</div>
-            <ul>
-              <li>Designing and testing circuits</li>
-              <li>Working with microcontrollers and embedded systems</li>
-              <li>Analyzing power flow in large-scale grids</li>
-              <li>Developing signal processing algorithms</li>
-              <li>Writing technical documentation</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">First & second year courses</div>
-            <ul>
-              <li>Circuit Analysis</li>
-              <li>Electromagnetism</li>
-              <li>Linear Algebra & Calculus</li>
-              <li>Signals and Systems</li>
-              <li>Digital Logic</li>
-              <li>Physics</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Career paths</div>
-            <ul>
-              <li>Power systems engineer</li>
-              <li>Electronics engineer</li>
-              <li>Telecommunications engineer</li>
-              <li>Control systems engineer</li>
-              <li>Embedded systems developer</li>
-              <li>Biomedical engineer</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Salary in Canada (2025)</div>
-            <div class="salary-range">$70K – $164K+</div>
-            <div class="salary-note">Entry-level around $65K–$85K. Senior engineers with specialization reach $115K–$140K+.</div>
+    <div class="branch-card" id="electrical" data-r data-d="1">
+      <div class="branch-inner">
+        <div class="branch-vis">
+          <div class="branch-vis-inner" style="background: linear-gradient(135deg, #19130a 0%, #2e1e08 100%);">
+            <svg viewBox="0 0 600 110" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <line x1="50" y1="55" x2="120" y2="55" stroke="#f0c060" stroke-width="1.5"/>
+              <rect x="120" y="40" width="30" height="30" rx="3" stroke="#f0c060" stroke-width="1.5"/>
+              <line x1="150" y1="55" x2="200" y2="55" stroke="#f0c060" stroke-width="1.5"/>
+              <circle cx="215" cy="55" r="15" stroke="#f0c060" stroke-width="1.5"/>
+              <line x1="230" y1="55" x2="280" y2="55" stroke="#f0c060" stroke-width="1.5"/>
+              <rect x="280" y="40" width="30" height="30" rx="3" stroke="#f0c060" stroke-width="1.5"/>
+              <line x1="310" y1="55" x2="370" y2="55" stroke="#f0c060" stroke-width="1.5"/>
+              <circle cx="385" cy="55" r="15" stroke="#f0c060" stroke-width="1.5"/>
+              <line x1="400" y1="55" x2="450" y2="55" stroke="#f0c060" stroke-width="1.5"/>
+              <rect x="450" y="40" width="30" height="30" rx="3" stroke="#f0c060" stroke-width="1.5"/>
+              <line x1="480" y1="55" x2="550" y2="55" stroke="#f0c060" stroke-width="1.5"/>
+              <line x1="120" y1="55" x2="120" y2="20" stroke="#f0c060" stroke-width="1" stroke-dasharray="2 4"/>
+              <line x1="280" y1="55" x2="280" y2="20" stroke="#f0c060" stroke-width="1" stroke-dasharray="2 4"/>
+              <line x1="450" y1="55" x2="450" y2="20" stroke="#f0c060" stroke-width="1" stroke-dasharray="2 4"/>
+            </svg>
+            <div class="branch-vis-label">
+              <div class="bvl-tag">03 — Math-heavy</div>
+              <div class="bvl-name">Electrical Engineering</div>
+            </div>
           </div>
         </div>
-
-        <div class="info-box">
-          <div class="info-box-label">Strong Canadian universities</div>
-          <div class="unis-row">
-            <span class="uni-chip">University of Waterloo</span>
-            <span class="uni-chip">University of Toronto</span>
-            <span class="uni-chip">UBC</span>
-            <span class="uni-chip">McGill</span>
-            <span class="uni-chip">McMaster</span>
+        <div class="branch-header" onclick="toggleBranch('electrical')">
+          <div class="branch-icon" style="background:#FAEEDA; color:#854F0B;">⚡</div>
+          <div class="branch-header-text">
+            <div class="branch-name">Electrical Engineering</div>
+            <div class="branch-tagline">The branch behind everything that runs on power or sends a signal.</div>
           </div>
+          <div class="branch-tags">
+            <span class="tag" style="background:#FAEEDA; color:#854F0B;">Math-heavy</span>
+            <span class="tag" style="background:#E6F1FB; color:#185FA5;">High demand</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="branch-body">
+          <p class="branch-overview">Electrical engineers design and develop electrical systems — from the power grid that lights your city, to the circuits inside your phone, to the sensors in a self-driving car. It's a broad field with a heavy lean toward math and physics, and it bleeds into electronics, computing, and telecommunications.</p>
+          <div class="info-grid">
+            <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Designing and testing circuits</li><li>Working with microcontrollers and embedded systems</li><li>Analyzing power flow in large-scale grids</li><li>Developing signal processing algorithms</li><li>Writing technical documentation</li></ul></div>
+            <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Circuit Analysis</li><li>Electromagnetism</li><li>Linear Algebra &amp; Calculus</li><li>Signals and Systems</li><li>Digital Logic</li><li>Physics</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Power systems engineer</li><li>Electronics engineer</li><li>Telecommunications engineer</li><li>Control systems engineer</li><li>Embedded systems developer</li><li>Biomedical engineer</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$70K – $164K+</div><div class="salary-note">Entry-level around $65K–$85K. Senior engineers with specialization reach $115K–$140K+.</div></div>
+          </div>
+          <div class="info-box"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">University of Waterloo</span><span class="uni-chip">University of Toronto</span><span class="uni-chip">UBC</span><span class="uni-chip">McGill</span><span class="uni-chip">McMaster</span></div></div>
         </div>
       </div>
     </div>
 
     <!-- CHEMICAL -->
-    <div class="branch-card" id="chemical">
-      <div class="branch-header" onclick="toggleBranch('chemical')">
-        <div class="branch-icon" style="background:#EEEDFE; color:#534AB7;">🧪</div>
-        <div class="branch-header-text">
-          <div class="branch-name">Chemical Engineering</div>
-          <div class="branch-tagline">Turns raw materials into useful products — at massive scale.</div>
-        </div>
-        <div class="branch-tags">
-          <span class="tag" style="background:#EEEDFE; color:#534AB7;">Highest paid</span>
-          <span class="tag" style="background:#EAF3EC; color:#1B4332;">Process focus</span>
-        </div>
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="branch-body">
-        <p class="branch-overview">Chemical engineers figure out how to take a chemical process that works in a lab and make it work in a factory producing thousands of litres a day. They work in pharmaceuticals, food processing, oil and gas, plastics, environmental remediation, and increasingly in clean energy. It's heavily rooted in chemistry and thermodynamics, with a strong process and systems focus.</p>
-
-        <div class="info-grid">
-          <div class="info-box">
-            <div class="info-box-label">Day to day</div>
-            <ul>
-              <li>Designing and optimizing industrial processes</li>
-              <li>Monitoring temperature, pressure, and flow</li>
-              <li>Running safety and hazard analyses</li>
-              <li>Working on emissions reduction</li>
-              <li>Scale-up from lab to production</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">First & second year courses</div>
-            <ul>
-              <li>General & Organic Chemistry</li>
-              <li>Thermodynamics</li>
-              <li>Fluid Mechanics</li>
-              <li>Mass and Energy Balances</li>
-              <li>Chemical Reaction Engineering</li>
-              <li>Process Control</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Career paths</div>
-            <ul>
-              <li>Process engineer</li>
-              <li>Petrochemical engineer</li>
-              <li>Pharmaceutical engineer</li>
-              <li>Environmental engineer</li>
-              <li>Biochemical engineer</li>
-              <li>Materials engineer</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Salary in Canada (2025)</div>
-            <div class="salary-range">$91K – $162K+</div>
-            <div class="salary-note">Highest paid among all major engineering disciplines in Canada on average. Particularly strong salaries in Alberta and BC.</div>
+    <div class="branch-card" id="chemical" data-r data-d="1">
+      <div class="branch-inner">
+        <div class="branch-vis">
+          <div class="branch-vis-inner" style="background: linear-gradient(135deg, #110e1e 0%, #1b153c 100%);">
+            <svg viewBox="0 0 600 110" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <circle cx="200" cy="55" r="28" stroke="#a99fe0" stroke-width="1.5"/>
+              <circle cx="200" cy="55" r="14" stroke="#a99fe0" stroke-width="1"/>
+              <circle cx="300" cy="55" r="28" stroke="#a99fe0" stroke-width="1.5"/>
+              <circle cx="300" cy="55" r="14" stroke="#a99fe0" stroke-width="1"/>
+              <circle cx="400" cy="55" r="28" stroke="#a99fe0" stroke-width="1.5"/>
+              <circle cx="400" cy="55" r="14" stroke="#a99fe0" stroke-width="1"/>
+              <line x1="228" y1="55" x2="272" y2="55" stroke="#a99fe0" stroke-width="2"/>
+              <line x1="328" y1="55" x2="372" y2="55" stroke="#a99fe0" stroke-width="2"/>
+            </svg>
+            <div class="branch-vis-label">
+              <div class="bvl-tag">04 — Highest paid</div>
+              <div class="bvl-name">Chemical Engineering</div>
+            </div>
           </div>
         </div>
-
-        <div class="info-box" style="margin-bottom:1rem;">
-          <div class="info-box-label">Strong Canadian universities</div>
-          <div class="unis-row">
-            <span class="uni-chip">University of Waterloo</span>
-            <span class="uni-chip">University of Alberta</span>
-            <span class="uni-chip">UBC</span>
-            <span class="uni-chip">University of Toronto</span>
-            <span class="uni-chip">McMaster</span>
+        <div class="branch-header" onclick="toggleBranch('chemical')">
+          <div class="branch-icon" style="background:#EEEDFE; color:#534AB7;">🧪</div>
+          <div class="branch-header-text">
+            <div class="branch-name">Chemical Engineering</div>
+            <div class="branch-tagline">Turns raw materials into useful products — at massive scale.</div>
           </div>
+          <div class="branch-tags">
+            <span class="tag" style="background:#EEEDFE; color:#534AB7;">Highest paid</span>
+            <span class="tag" style="background:#EAF3EC; color:#1B4332;">Process focus</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-
-        <div class="founder-note-inline">Note: you'll need Grade 11 and 12 Chemistry for this path. Don't drop Chem early if you think chemical engineering might interest you.</div>
+        <div class="branch-body">
+          <p class="branch-overview">Chemical engineers figure out how to take a chemical process that works in a lab and make it work in a factory producing thousands of litres a day. They work in pharmaceuticals, food processing, oil and gas, plastics, environmental remediation, and increasingly in clean energy. It's heavily rooted in chemistry and thermodynamics, with a strong process and systems focus.</p>
+          <div class="info-grid">
+            <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Designing and optimizing industrial processes</li><li>Monitoring temperature, pressure, and flow</li><li>Running safety and hazard analyses</li><li>Working on emissions reduction</li><li>Scale-up from lab to production</li></ul></div>
+            <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>General &amp; Organic Chemistry</li><li>Thermodynamics</li><li>Fluid Mechanics</li><li>Mass and Energy Balances</li><li>Chemical Reaction Engineering</li><li>Process Control</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Process engineer</li><li>Petrochemical engineer</li><li>Pharmaceutical engineer</li><li>Environmental engineer</li><li>Biochemical engineer</li><li>Materials engineer</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$91K – $162K+</div><div class="salary-note">Highest paid among all major engineering disciplines in Canada on average. Particularly strong salaries in Alberta and BC.</div></div>
+          </div>
+          <div class="info-box" style="margin-bottom:1rem;"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">University of Waterloo</span><span class="uni-chip">University of Alberta</span><span class="uni-chip">UBC</span><span class="uni-chip">University of Toronto</span><span class="uni-chip">McMaster</span></div></div>
+          <div class="founder-note-inline">Note: you'll need Grade 11 and 12 Chemistry for this path. Don't drop Chem early if you think chemical engineering might interest you.</div>
+        </div>
       </div>
     </div>
 
     <!-- AEROSPACE -->
-    <div class="branch-card" id="aerospace">
-      <div class="branch-header" onclick="toggleBranch('aerospace')">
-        <div class="branch-icon" style="background:#FDE8E8; color:#9B1C1C;">✈</div>
-        <div class="branch-header-text">
-          <div class="branch-name">Aerospace Engineering</div>
-          <div class="branch-tagline">For people who look at planes and wonder how they actually work.</div>
-        </div>
-        <div class="branch-tags">
-          <span class="tag" style="background:#FDE8E8; color:#9B1C1C;">Specialized</span>
-          <span class="tag" style="background:#FAEEDA; color:#854F0B;">Mech overlap</span>
-        </div>
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="branch-body">
-        <p class="branch-overview">Aerospace engineers design, build, test, and maintain aircraft and spacecraft. In Canada, the field is smaller than mechanical or civil but highly specialized — think Bombardier, Pratt & Whitney, MDA Space, and the Canadian Space Agency. There's a lot of overlap with mechanical engineering in structures, propulsion, and materials, so the two are often paired.</p>
-
-        <div class="info-grid">
-          <div class="info-box">
-            <div class="info-box-label">Day to day</div>
-            <ul>
-              <li>Aerodynamic modelling and simulation</li>
-              <li>Structural testing of aircraft components</li>
-              <li>Working with propulsion systems</li>
-              <li>Flight simulation and analysis</li>
-              <li>Drone and satellite systems (growing fast)</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">First & second year courses</div>
-            <ul>
-              <li>Statics & Dynamics</li>
-              <li>Thermodynamics</li>
-              <li>Fluid Mechanics</li>
-              <li>Aerodynamics (later years)</li>
-              <li>Flight Mechanics (later years)</li>
-              <li>Materials Science</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Career paths</div>
-            <ul>
-              <li>Aerodynamics engineer</li>
-              <li>Propulsion engineer</li>
-              <li>Flight systems engineer</li>
-              <li>Spacecraft / satellite designer</li>
-              <li>Drone engineer</li>
-              <li>Aviation safety engineer</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Salary in Canada (2025)</div>
-            <div class="salary-range">$85K – $124K+</div>
-            <div class="salary-note">Highest salaries in Ontario and Quebec due to concentration of aerospace companies. Top earners reach $200K+ in senior roles.</div>
+    <div class="branch-card" id="aerospace" data-r data-d="1">
+      <div class="branch-inner">
+        <div class="branch-vis">
+          <div class="branch-vis-inner" style="background: linear-gradient(135deg, #0f0d18 0%, #1c1828 100%);">
+            <svg viewBox="0 0 600 110" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <path d="M80 60 L260 40 L450 55 L520 50" stroke="#e8b4b4" stroke-width="2" stroke-linecap="round"/>
+              <path d="M260 40 L230 75 L290 72 Z" stroke="#e8b4b4" stroke-width="1.5" fill="none"/>
+              <path d="M320 54 L310 75 L350 72 Z" stroke="#e8b4b4" stroke-width="1" fill="none"/>
+              <line x1="260" y1="40" x2="260" y2="0" stroke="#e8b4b4" stroke-width="0.8" stroke-dasharray="3 5"/>
+              <circle cx="260" cy="40" r="5" stroke="#e8b4b4" stroke-width="1.5"/>
+            </svg>
+            <div class="branch-vis-label">
+              <div class="bvl-tag">05 — Specialized</div>
+              <div class="bvl-name">Aerospace Engineering</div>
+            </div>
           </div>
         </div>
-
-        <div class="info-box" style="margin-bottom:1rem;">
-          <div class="info-box-label">Strong Canadian universities</div>
-          <div class="unis-row">
-            <span class="uni-chip">Toronto Metropolitan (Ryerson)</span>
-            <span class="uni-chip">Carleton</span>
-            <span class="uni-chip">McGill</span>
-            <span class="uni-chip">Waterloo (via Mechanical)</span>
-            <span class="uni-chip">U of T (via Mechanical)</span>
+        <div class="branch-header" onclick="toggleBranch('aerospace')">
+          <div class="branch-icon" style="background:#FDE8E8; color:#9B1C1C;">✈</div>
+          <div class="branch-header-text">
+            <div class="branch-name">Aerospace Engineering</div>
+            <div class="branch-tagline">For people who look at planes and wonder how they actually work.</div>
           </div>
+          <div class="branch-tags">
+            <span class="tag" style="background:#FDE8E8; color:#9B1C1C;">Specialized</span>
+            <span class="tag" style="background:#FAEEDA; color:#854F0B;">Mech overlap</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-
-        <div class="founder-note-inline">Heads up: many universities don't offer aerospace as a standalone undergrad. Students often enter mechanical engineering and specialize from there. Check if your target school offers a dedicated program before applying.</div>
+        <div class="branch-body">
+          <p class="branch-overview">Aerospace engineers design, build, test, and maintain aircraft and spacecraft. In Canada, the field is smaller than mechanical or civil but highly specialized — think Bombardier, Pratt &amp; Whitney, MDA Space, and the Canadian Space Agency. There's a lot of overlap with mechanical engineering in structures, propulsion, and materials, so the two are often paired.</p>
+          <div class="info-grid">
+            <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Aerodynamic modelling and simulation</li><li>Structural testing of aircraft components</li><li>Working with propulsion systems</li><li>Flight simulation and analysis</li><li>Drone and satellite systems (growing fast)</li></ul></div>
+            <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Statics &amp; Dynamics</li><li>Thermodynamics</li><li>Fluid Mechanics</li><li>Aerodynamics (later years)</li><li>Flight Mechanics (later years)</li><li>Materials Science</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Aerodynamics engineer</li><li>Propulsion engineer</li><li>Flight systems engineer</li><li>Spacecraft / satellite designer</li><li>Drone engineer</li><li>Aviation safety engineer</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$85K – $124K+</div><div class="salary-note">Highest salaries in Ontario and Quebec due to concentration of aerospace companies. Top earners reach $200K+ in senior roles.</div></div>
+          </div>
+          <div class="info-box" style="margin-bottom:1rem;"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">Toronto Metropolitan (Ryerson)</span><span class="uni-chip">Carleton</span><span class="uni-chip">McGill</span><span class="uni-chip">Waterloo (via Mechanical)</span><span class="uni-chip">U of T (via Mechanical)</span></div></div>
+          <div class="founder-note-inline">Heads up: many universities don't offer aerospace as a standalone undergrad. Students often enter mechanical engineering and specialize from there.</div>
+        </div>
       </div>
     </div>
 
     <!-- SOFTWARE -->
-    <div class="branch-card" id="software">
-      <div class="branch-header" onclick="toggleBranch('software')">
-        <div class="branch-icon" style="background:#E0F2F1; color:#00695C;">💻</div>
-        <div class="branch-header-text">
-          <div class="branch-name">Software Engineering</div>
-          <div class="branch-tagline">Applying engineering principles to building software systems.</div>
-        </div>
-        <div class="branch-tags">
-          <span class="tag" style="background:#E0F2F1; color:#00695C;">Highest earning</span>
-        </div>
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="branch-body">
-        <p class="branch-overview">Software engineers design, build, and maintain software systems at scale. They apply engineering principles — not just coding skills — to system architecture, reliability, testing, and deployment. The field is massive and ranges from embedded systems (software inside physical hardware) to web platforms to AI systems.</p>
-
-        <div class="info-grid">
-          <div class="info-box">
-            <div class="info-box-label">Day to day</div>
-            <ul>
-              <li>Writing and reviewing code</li>
-              <li>Designing system architecture</li>
-              <li>Testing, debugging, and deploying software</li>
-              <li>Collaborating with product and design teams</li>
-              <li>Documenting technical decisions</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">First & second year courses</div>
-            <ul>
-              <li>Data Structures & Algorithms</li>
-              <li>Discrete Mathematics</li>
-              <li>Linear Algebra & Calculus</li>
-              <li>Operating Systems</li>
-              <li>Software Design</li>
-              <li>Statistics / Probability</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Career paths</div>
-            <ul>
-              <li>Software developer / engineer</li>
-              <li>Embedded systems engineer</li>
-              <li>Machine learning engineer</li>
-              <li>DevOps / cloud engineer</li>
-              <li>Cybersecurity engineer</li>
-              <li>Systems architect</li>
-            </ul>
-          </div>
-          <div class="info-box">
-            <div class="info-box-label">Salary in Canada (2025)</div>
-            <div class="salary-range">$85K – $150K+</div>
-            <div class="salary-note">One of the highest-paying engineering disciplines. Experienced AI, cloud, and cybersecurity engineers commonly earn over $150K.</div>
+    <div class="branch-card" id="software" data-r data-d="1">
+      <div class="branch-inner">
+        <div class="branch-vis">
+          <div class="branch-vis-inner" style="background: linear-gradient(135deg, #081510 0%, #0d2018 100%);">
+            <svg viewBox="0 0 600 110" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+              <rect x="80" y="25" width="440" height="60" rx="8" stroke="#74c9a0" stroke-width="1"/>
+              <line x1="80" y1="45" x2="520" y2="45" stroke="#74c9a0" stroke-width="0.8" stroke-dasharray="2 4"/>
+              <text x="95" y="38" fill="#74c9a0" font-size="11" font-family="monospace" opacity="0.7">&lt;function</text>
+              <text x="200" y="38" fill="#74c9a0" font-size="11" font-family="monospace" opacity="0.4">build()</text>
+              <text x="95" y="60" fill="#74c9a0" font-size="10" font-family="monospace" opacity="0.4">  return</text>
+              <text x="165" y="60" fill="#74c9a0" font-size="10" font-family="monospace" opacity="0.6">solution</text>
+              <text x="95" y="76" fill="#74c9a0" font-size="11" font-family="monospace" opacity="0.7">}</text>
+            </svg>
+            <div class="branch-vis-label">
+              <div class="bvl-tag">06 — Highest earning</div>
+              <div class="bvl-name">Software Engineering</div>
+            </div>
           </div>
         </div>
-
-        <div class="info-box" style="margin-bottom:1rem;">
-          <div class="info-box-label">Strong Canadian universities</div>
-          <div class="unis-row">
-            <span class="uni-chip">University of Waterloo</span>
-            <span class="uni-chip">University of Toronto</span>
-            <span class="uni-chip">UBC</span>
-            <span class="uni-chip">McMaster</span>
-            <span class="uni-chip">McGill</span>
+        <div class="branch-header" onclick="toggleBranch('software')">
+          <div class="branch-icon" style="background:#E0F2F1; color:#00695C;">💻</div>
+          <div class="branch-header-text">
+            <div class="branch-name">Software Engineering</div>
+            <div class="branch-tagline">Applying engineering principles to building software systems.</div>
           </div>
+          <div class="branch-tags">
+            <span class="tag" style="background:#E0F2F1; color:#00695C;">Highest earning</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-
-        <div class="founder-note-inline">A note from me: I personally moved away from pursuing software engineering at university, even though I enjoy working with computers. That said, it's one of the most in-demand and highest-paying branches out there, so it belongs on this page. If it interests you, look into it seriously.</div>
+        <div class="branch-body">
+          <p class="branch-overview">Software engineers design, build, and maintain software systems at scale. They apply engineering principles — not just coding skills — to system architecture, reliability, testing, and deployment. The field is massive and ranges from embedded systems to web platforms to AI systems.</p>
+          <div class="info-grid">
+            <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Writing and reviewing code</li><li>Designing system architecture</li><li>Testing, debugging, and deploying software</li><li>Collaborating with product and design teams</li><li>Documenting technical decisions</li></ul></div>
+            <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Data Structures &amp; Algorithms</li><li>Discrete Mathematics</li><li>Linear Algebra &amp; Calculus</li><li>Operating Systems</li><li>Software Design</li><li>Statistics / Probability</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Software developer / engineer</li><li>Embedded systems engineer</li><li>Machine learning engineer</li><li>DevOps / cloud engineer</li><li>Cybersecurity engineer</li><li>Systems architect</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$85K – $150K+</div><div class="salary-note">One of the highest-paying engineering disciplines. Experienced AI, cloud, and cybersecurity engineers commonly earn over $150K.</div></div>
+          </div>
+          <div class="info-box" style="margin-bottom:1rem;"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">University of Waterloo</span><span class="uni-chip">University of Toronto</span><span class="uni-chip">UBC</span><span class="uni-chip">McMaster</span><span class="uni-chip">McGill</span></div></div>
+          <div class="founder-note-inline">A note from me: I personally moved away from pursuing software engineering at university, even though I enjoy working with computers. That said, it's one of the most in-demand and highest-paying branches out there.</div>
+        </div>
       </div>
     </div>
 
     <!-- COMING SOON -->
-    <div class="coming-soon-card">
-      <div class="cs-icon">🌿</div>
-      <div class="cs-text">
-        <h4>Environmental Engineering — coming soon</h4>
-        <p>Water systems, climate, remediation. Being written now.</p>
-      </div>
-    </div>
-    <div class="coming-soon-card">
-      <div class="cs-icon">🦾</div>
-      <div class="cs-text">
-        <h4>Mechatronics Engineering — coming soon</h4>
-        <p>The crossover between mechanical, electrical, and software.</p>
-      </div>
-    </div>
-    <div class="coming-soon-card">
-      <div class="cs-icon">🧬</div>
-      <div class="cs-text">
-        <h4>Biomedical Engineering — coming soon</h4>
-        <p>Engineering applied to medicine and the human body.</p>
-      </div>
-    </div>
-
+    <div class="coming-soon-card" data-r><div class="cs-icon">🌿</div><div class="cs-text"><h4>Environmental Engineering — coming soon</h4><p>Water systems, climate, remediation. Being written now.</p></div></div>
+    <div class="coming-soon-card" data-r><div class="cs-icon">🦾</div><div class="cs-text"><h4>Mechatronics Engineering — coming soon</h4><p>The crossover between mechanical, electrical, and software.</p></div></div>
+    <div class="coming-soon-card" data-r><div class="cs-icon">🧬</div><div class="cs-text"><h4>Biomedical Engineering — coming soon</h4><p>Engineering applied to medicine and the human body.</p></div></div>
   </div>
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-
-    <div class="founder-sidebar">
+    <div class="founder-card">
       <h4>From the founder</h4>
       <p>"I built this page to help myself figure out which branch was right for me. Mechanical won — but read through all of them before you decide."</p>
     </div>
-
     <div class="sidebar-card">
       <h4>Jump to branch</h4>
-      <div onclick="openBranch('mechanical')" class="sidebar-nav-link"><span class="snl-icon" style="background:#EAF3EC;">⚙</span> Mechanical</div>
-      <div onclick="openBranch('civil')" class="sidebar-nav-link"><span class="snl-icon" style="background:#E6F1FB;">🏗</span> Civil</div>
-      <div onclick="openBranch('electrical')" class="sidebar-nav-link"><span class="snl-icon" style="background:#FAEEDA;">⚡</span> Electrical</div>
-      <div onclick="openBranch('chemical')" class="sidebar-nav-link"><span class="snl-icon" style="background:#EEEDFE;">🧪</span> Chemical</div>
-      <div onclick="openBranch('aerospace')" class="sidebar-nav-link"><span class="snl-icon" style="background:#FDE8E8;">✈</span> Aerospace</div>
-      <div onclick="openBranch('software')" class="sidebar-nav-link"><span class="snl-icon" style="background:#E0F2F1;">💻</span> Software</div>
+      <div onclick="openBranch('mechanical')" class="snl"><span class="snl-icon" style="background:#EAF3EC;">⚙</span> Mechanical</div>
+      <div onclick="openBranch('civil')" class="snl"><span class="snl-icon" style="background:#E6F1FB;">🏗</span> Civil</div>
+      <div onclick="openBranch('electrical')" class="snl"><span class="snl-icon" style="background:#FAEEDA;">⚡</span> Electrical</div>
+      <div onclick="openBranch('chemical')" class="snl"><span class="snl-icon" style="background:#EEEDFE;">🧪</span> Chemical</div>
+      <div onclick="openBranch('aerospace')" class="snl"><span class="snl-icon" style="background:#FDE8E8;">✈</span> Aerospace</div>
+      <div onclick="openBranch('software')" class="snl"><span class="snl-icon" style="background:#E0F2F1;">💻</span> Software</div>
     </div>
-
-    <div class="fit-cta">
+    <div class="fit-card">
       <h4>Not sure which fits you?</h4>
       <p>Answer a few questions and get a branch recommendation based on what you actually like doing.</p>
       <a href="fit.html">Try the fit guide →</a>
     </div>
-
     <div class="sidebar-card">
       <h4>Quick salary comparison</h4>
-      <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.25rem;">
-        <div style="font-size:12px; color:var(--text-muted); display:flex; justify-content:space-between;"><span>⚙ Mechanical</span><span style="color:var(--text); font-weight:500;">$63–102K</span></div>
-        <div style="font-size:12px; color:var(--text-muted); display:flex; justify-content:space-between;"><span>🏗 Civil</span><span style="color:var(--text); font-weight:500;">$75–115K</span></div>
-        <div style="font-size:12px; color:var(--text-muted); display:flex; justify-content:space-between;"><span>⚡ Electrical</span><span style="color:var(--text); font-weight:500;">$70–164K</span></div>
-        <div style="font-size:12px; color:var(--text-muted); display:flex; justify-content:space-between;"><span>🧪 Chemical</span><span style="color:var(--text); font-weight:500;">$91–162K</span></div>
-        <div style="font-size:12px; color:var(--text-muted); display:flex; justify-content:space-between;"><span>✈ Aerospace</span><span style="color:var(--text); font-weight:500;">$85–124K</span></div>
-        <div style="font-size:12px; color:var(--text-muted); display:flex; justify-content:space-between;"><span>💻 Software</span><span style="color:var(--text); font-weight:500;">$85–150K+</span></div>
-        <div style="font-size:11px; color:var(--text-faint); margin-top:0.25rem;">Canadian averages, 2025. Entry to mid-career.</div>
+      <div class="salary-comp">
+        <div class="sc-row"><span>⚙ Mechanical</span><span>$63–102K</span></div>
+        <div class="sc-row"><span>🏗 Civil</span><span>$75–115K</span></div>
+        <div class="sc-row"><span>⚡ Electrical</span><span>$70–164K</span></div>
+        <div class="sc-row"><span>🧪 Chemical</span><span>$91–162K</span></div>
+        <div class="sc-row"><span>✈ Aerospace</span><span>$85–124K</span></div>
+        <div class="sc-row"><span>💻 Software</span><span>$85–150K+</span></div>
+        <div style="font-size:11px; color:var(--text-3); margin-top:0.3rem;">Canadian averages, 2025. Entry to mid-career.</div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -913,21 +583,20 @@
 </footer>
 
 <script>
-  function toggleBranch(id) {
-    const card = document.getElementById(id);
-    card.classList.toggle('open');
-  }
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 10), { passive: true });
 
+  function toggleBranch(id) { document.getElementById(id).classList.toggle('open'); }
   function openBranch(id) {
     const card = document.getElementById(id);
-    if (!card.classList.contains('open')) {
-      card.classList.add('open');
-    }
-    setTimeout(() => {
-      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
+    if (!card.classList.contains('open')) card.classList.add('open');
+    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
   }
-</script>
 
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('[data-r]').forEach(el => io.observe(el));
+</script>
 </body>
 </html>
