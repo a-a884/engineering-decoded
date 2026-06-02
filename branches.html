@@ -34,7 +34,7 @@
     background-size: 250px 250px;
   }
 
-  /* ── NAV ── */
+  /* NAV */
   nav {
     position: sticky; top: 0; z-index: 100;
     background: var(--bg); border-bottom: 1px solid var(--border);
@@ -49,7 +49,7 @@
   .nav-links a:hover { color: var(--text); }
   .nav-links a.active { color: var(--text); font-weight: 500; }
 
-  /* ── PAGE BANNER (dark compact) ── */
+  /* PAGE BANNER */
   .page-banner {
     background: var(--dark); padding: 4rem 3rem 3.5rem;
     position: relative; overflow: hidden;
@@ -76,7 +76,7 @@
   .page-banner h1 em { font-style: italic; color: var(--green-mid); }
   .page-banner p { font-size: 14.5px; color: rgba(237,233,224,0.46); max-width: 520px; line-height: 1.75; }
 
-  /* ── PILLS ── */
+  /* PILLS */
   .section-nav { padding: 0 3rem 2.5rem; display: flex; gap: 0.55rem; flex-wrap: wrap; padding-top: 2rem; }
   .pill {
     font-size: 12px; font-weight: 500; padding: 0.35rem 0.9rem; border-radius: 50px;
@@ -88,10 +88,10 @@
 
   .divider { height: 1px; background: var(--border); margin: 0 3rem; }
 
-  /* ── LAYOUT ── */
+  /* LAYOUT */
   .main-layout { display: grid; grid-template-columns: 1fr 260px; gap: 3rem; padding: 3rem 3rem 5rem; max-width: 1100px; }
 
-  /* ── BRANCH CARD (accordion) ── */
+  /* BRANCH CARD */
   .branch-card {
     background: rgba(0,0,0,0.018); border: 1px solid var(--border);
     border-radius: 20px; padding: 5px;
@@ -104,7 +104,6 @@
 
   .branch-inner { background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,0.9); }
 
-  /* Visual header strip for each branch */
   .branch-vis {
     height: 0; overflow: hidden; position: relative;
     transition: height 380ms var(--e3);
@@ -165,7 +164,7 @@
   .cs-text h4 { font-size: 14px; font-weight: 500; color: var(--text-2); margin-bottom: 0.2rem; }
   .cs-text p { font-size: 13px; color: var(--text-3); }
 
-  /* ── SIDEBAR ── */
+  /* SIDEBAR */
   .sidebar { position: sticky; top: 80px; align-self: start; }
   .sidebar-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 1.35rem; margin-bottom: 1rem; }
   .sidebar-card h4 { font-size: 10px; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.9rem; }
@@ -186,7 +185,7 @@
   .sc-row { font-size: 12px; color: var(--text-2); display: flex; justify-content: space-between; align-items: center; }
   .sc-row span:last-child { font-weight: 500; color: var(--text); }
 
-  /* ── REVEAL & ANIMATIONS ── */
+  /* REVEAL */
   [data-r] { opacity: 0; transform: translateY(16px); transition: opacity 0.6s var(--e2), transform 0.6s var(--e2); }
   [data-r].on { opacity: 1; transform: none; }
   [data-r][data-d="1"] { transition-delay: 80ms; }
@@ -295,7 +294,7 @@
             <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Designing parts and assemblies in CAD</li><li>Running stress and heat simulations</li><li>Working with manufacturing teams</li><li>Testing prototypes and iterating</li><li>Writing engineering reports</li></ul></div>
             <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Statics &amp; Dynamics</li><li>Thermodynamics</li><li>Fluid Mechanics</li><li>Materials Science</li><li>Calculus &amp; Physics</li><li>Engineering Drawing / CAD</li></ul></div>
             <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Automotive engineer</li><li>Robotics / automation engineer</li><li>Aerospace engineer</li><li>HVAC designer</li><li>Manufacturing engineer</li><li>Energy systems engineer</li></ul></div>
-            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$63K – $102K+</div><div class="salary-note">Entry-level to mid-career. Specialists in robotics and automation earn toward the higher end. Top earners reach $130K+.</div></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$62K – $151K+</div><div class="salary-note">Entry-level starts around $62K. Mid-career specialists in robotics, automation, and energy systems sit in the $90K–$110K range. Senior engineers in Alberta and Ontario regularly exceed $130K–$150K.</div></div>
           </div>
           <div class="info-box" style="margin-bottom:1rem;"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">University of Toronto</span><span class="uni-chip">University of Waterloo</span><span class="uni-chip">UBC</span><span class="uni-chip">Queen's</span><span class="uni-chip">McMaster</span></div></div>
           <div class="founder-note-inline">My pick. If you like how things physically work — machines, forces, heat — and want to design things that exist in the real world, mechanical is worth looking at seriously.</div>
@@ -336,14 +335,14 @@
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="branch-body">
-          <p class="branch-overview">Civil engineers design and build the infrastructure society runs on — roads, bridges, tunnels, dams, water treatment plants, airports, and buildings. It's one of the oldest engineering disciplines and one of the most visible. Every bridge you've crossed and every building you've walked into was signed off by a civil engineer.</p>
+          <p class="branch-overview">Civil engineers design and build the infrastructure society runs on — roads, bridges, tunnels, dams, water treatment plants, airports, and buildings. It's one of the oldest engineering disciplines and one of the most visible. Every bridge you've crossed and every building you've walked into was designed by a civil engineer and signed off by a licensed P.Eng.</p>
           <div class="info-grid">
             <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Structural analysis and load calculations</li><li>Site surveys and inspections</li><li>Reading and producing technical drawings</li><li>Working with environmental regulations</li><li>Coordinating with architects and contractors</li></ul></div>
             <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Statics &amp; Structural Analysis</li><li>Soil Mechanics (Geotechnical)</li><li>Fluid Mechanics</li><li>Engineering Materials</li><li>Surveying</li><li>Environmental Engineering</li></ul></div>
             <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Structural engineer</li><li>Transportation engineer</li><li>Geotechnical engineer</li><li>Environmental engineer</li><li>Urban planner</li><li>Construction manager</li></ul></div>
-            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$75K – $115K+</div><div class="salary-note">Average sits around $93,900/yr nationally. Strong demand driven by infrastructure investment across Canada.</div></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$54K – $154K+</div><div class="salary-note">Entry-level roles start around $54K–$65K. The national average sits around $95K/yr. Senior civil engineers in Alberta and Ontario reach $140K–$154K+.</div></div>
           </div>
-          <div class="info-box"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">UBC</span><span class="uni-chip">University of Waterloo</span><span class="uni-chip">University of Toronto</span><span class="uni-chip">McGill</span><span class="uni-chip">Queen's</span></div></div>
+          <div class="info-box"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">UBC</span><span class="uni-chip">University of Toronto</span><span class="uni-chip">University of Waterloo</span><span class="uni-chip">McGill</span><span class="uni-chip">Queen's</span></div></div>
         </div>
       </div>
     </div>
@@ -392,8 +391,8 @@
           <div class="info-grid">
             <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Designing and testing circuits</li><li>Working with microcontrollers and embedded systems</li><li>Analyzing power flow in large-scale grids</li><li>Developing signal processing algorithms</li><li>Writing technical documentation</li></ul></div>
             <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Circuit Analysis</li><li>Electromagnetism</li><li>Linear Algebra &amp; Calculus</li><li>Signals and Systems</li><li>Digital Logic</li><li>Physics</li></ul></div>
-            <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Power systems engineer</li><li>Electronics engineer</li><li>Telecommunications engineer</li><li>Control systems engineer</li><li>Embedded systems developer</li><li>Biomedical engineer</li></ul></div>
-            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$70K – $164K+</div><div class="salary-note">Entry-level around $65K–$85K. Senior engineers with specialization reach $115K–$140K+.</div></div>
+            <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Power systems engineer</li><li>Electronics / hardware engineer</li><li>Telecommunications engineer</li><li>Control systems engineer</li><li>Embedded systems developer</li><li>Renewable energy engineer</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$77K – $164K+</div><div class="salary-note">Entry-level around $60K–$77K. The national average is roughly $77K. Senior engineers specializing in power systems, embedded tech, or renewables reach $115K–$164K+.</div></div>
           </div>
           <div class="info-box"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">University of Waterloo</span><span class="uni-chip">University of Toronto</span><span class="uni-chip">UBC</span><span class="uni-chip">McGill</span><span class="uni-chip">McMaster</span></div></div>
         </div>
@@ -416,7 +415,7 @@
               <line x1="328" y1="55" x2="372" y2="55" stroke="#a99fe0" stroke-width="2"/>
             </svg>
             <div class="branch-vis-label">
-              <div class="bvl-tag">04 — Highest paid</div>
+              <div class="bvl-tag">04 — Strong earning potential</div>
               <div class="bvl-name">Chemical Engineering</div>
             </div>
           </div>
@@ -428,7 +427,7 @@
             <div class="branch-tagline">Turns raw materials into useful products — at massive scale.</div>
           </div>
           <div class="branch-tags">
-            <span class="tag" style="background:#EEEDFE; color:#534AB7;">Highest paid</span>
+            <span class="tag" style="background:#EEEDFE; color:#534AB7;">Among highest-paid</span>
             <span class="tag" style="background:#EAF3EC; color:#1B4332;">Process focus</span>
           </div>
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
@@ -438,8 +437,8 @@
           <div class="info-grid">
             <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Designing and optimizing industrial processes</li><li>Monitoring temperature, pressure, and flow</li><li>Running safety and hazard analyses</li><li>Working on emissions reduction</li><li>Scale-up from lab to production</li></ul></div>
             <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>General &amp; Organic Chemistry</li><li>Thermodynamics</li><li>Fluid Mechanics</li><li>Mass and Energy Balances</li><li>Chemical Reaction Engineering</li><li>Process Control</li></ul></div>
-            <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Process engineer</li><li>Petrochemical engineer</li><li>Pharmaceutical engineer</li><li>Environmental engineer</li><li>Biochemical engineer</li><li>Materials engineer</li></ul></div>
-            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$91K – $162K+</div><div class="salary-note">Highest paid among all major engineering disciplines in Canada on average. Particularly strong salaries in Alberta and BC.</div></div>
+            <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Process engineer</li><li>Petrochemical engineer</li><li>Pharmaceutical engineer</li><li>Process safety engineer</li><li>Environmental engineer</li><li>Biochemical engineer</li></ul></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$57K – $160K+</div><div class="salary-note">Entry-level starts around $57K–$70K — not the $90K+ figure you'll sometimes see quoted. Mid-career sits around $90K–$110K. Senior roles in Alberta's oil & gas sector reach $140K–$160K.</div></div>
           </div>
           <div class="info-box" style="margin-bottom:1rem;"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">University of Waterloo</span><span class="uni-chip">University of Alberta</span><span class="uni-chip">UBC</span><span class="uni-chip">University of Toronto</span><span class="uni-chip">McMaster</span></div></div>
           <div class="founder-note-inline">Note: you'll need Grade 11 and 12 Chemistry for this path. Don't drop Chem early if you think chemical engineering might interest you.</div>
@@ -483,7 +482,7 @@
             <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Aerodynamic modelling and simulation</li><li>Structural testing of aircraft components</li><li>Working with propulsion systems</li><li>Flight simulation and analysis</li><li>Drone and satellite systems (growing fast)</li></ul></div>
             <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Statics &amp; Dynamics</li><li>Thermodynamics</li><li>Fluid Mechanics</li><li>Aerodynamics (later years)</li><li>Flight Mechanics (later years)</li><li>Materials Science</li></ul></div>
             <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Aerodynamics engineer</li><li>Propulsion engineer</li><li>Flight systems engineer</li><li>Spacecraft / satellite designer</li><li>Drone engineer</li><li>Aviation safety engineer</li></ul></div>
-            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$85K – $124K+</div><div class="salary-note">Highest salaries in Ontario and Quebec due to concentration of aerospace companies. Top earners reach $200K+ in senior roles.</div></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$93K – $148K+</div><div class="salary-note">One of the higher entry floors among engineering disciplines. The national average sits around $120K. Senior specialist roles at Bombardier, Pratt &amp; Whitney, and MDA reach $148K–$165K.</div></div>
           </div>
           <div class="info-box" style="margin-bottom:1rem;"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">Toronto Metropolitan (Ryerson)</span><span class="uni-chip">Carleton</span><span class="uni-chip">McGill</span><span class="uni-chip">Waterloo (via Mechanical)</span><span class="uni-chip">U of T (via Mechanical)</span></div></div>
           <div class="founder-note-inline">Heads up: many universities don't offer aerospace as a standalone undergrad. Students often enter mechanical engineering and specialize from there.</div>
@@ -506,7 +505,7 @@
               <text x="95" y="76" fill="#74c9a0" font-size="11" font-family="monospace" opacity="0.7">}</text>
             </svg>
             <div class="branch-vis-label">
-              <div class="bvl-tag">06 — Highest earning</div>
+              <div class="bvl-tag">06 — Highest ceiling</div>
               <div class="bvl-name">Software Engineering</div>
             </div>
           </div>
@@ -518,7 +517,7 @@
             <div class="branch-tagline">Applying engineering principles to building software systems.</div>
           </div>
           <div class="branch-tags">
-            <span class="tag" style="background:#E0F2F1; color:#00695C;">Highest earning</span>
+            <span class="tag" style="background:#E0F2F1; color:#00695C;">Highest ceiling</span>
           </div>
           <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
@@ -526,12 +525,12 @@
           <p class="branch-overview">Software engineers design, build, and maintain software systems at scale. They apply engineering principles — not just coding skills — to system architecture, reliability, testing, and deployment. The field is massive and ranges from embedded systems to web platforms to AI systems.</p>
           <div class="info-grid">
             <div class="info-box"><div class="info-box-label">Day to day</div><ul><li>Writing and reviewing code</li><li>Designing system architecture</li><li>Testing, debugging, and deploying software</li><li>Collaborating with product and design teams</li><li>Documenting technical decisions</li></ul></div>
-            <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Data Structures &amp; Algorithms</li><li>Discrete Mathematics</li><li>Linear Algebra &amp; Calculus</li><li>Operating Systems</li><li>Software Design</li><li>Statistics / Probability</li></ul></div>
+            <div class="info-box"><div class="info-box-label">First &amp; second year courses</div><ul><li>Programming Fundamentals</li><li>Data Structures &amp; Algorithms</li><li>Discrete Mathematics</li><li>Linear Algebra &amp; Calculus</li><li>Operating Systems</li><li>Software Design</li></ul></div>
             <div class="info-box"><div class="info-box-label">Career paths</div><ul><li>Software developer / engineer</li><li>Embedded systems engineer</li><li>Machine learning engineer</li><li>DevOps / cloud engineer</li><li>Cybersecurity engineer</li><li>Systems architect</li></ul></div>
-            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$85K – $150K+</div><div class="salary-note">One of the highest-paying engineering disciplines. Experienced AI, cloud, and cybersecurity engineers commonly earn over $150K.</div></div>
+            <div class="info-box"><div class="info-box-label">Salary in Canada (2025)</div><div class="salary-range">$70K – $200K+</div><div class="salary-note">Entry-level around $70K–$85K nationally. The national average across all experience levels is around $96K–$106K. Experienced AI, cloud, and cybersecurity engineers at major firms commonly reach $150K–$200K+.</div></div>
           </div>
           <div class="info-box" style="margin-bottom:1rem;"><div class="info-box-label">Strong Canadian universities</div><div class="unis-row"><span class="uni-chip">University of Waterloo</span><span class="uni-chip">University of Toronto</span><span class="uni-chip">UBC</span><span class="uni-chip">McMaster</span><span class="uni-chip">McGill</span></div></div>
-          <div class="founder-note-inline">A note from me: I personally moved away from pursuing software engineering at university, even though I enjoy working with computers. That said, it's one of the most in-demand and highest-paying branches out there.</div>
+          <div class="founder-note-inline">A note from me: I personally moved away from pursuing software engineering at university, even though I enjoy working with computers. That said, it's one of the most in-demand and highest-ceiling branches out there.</div>
         </div>
       </div>
     </div>
@@ -565,12 +564,12 @@
     <div class="sidebar-card">
       <h4>Quick salary comparison</h4>
       <div class="salary-comp">
-        <div class="sc-row"><span>⚙ Mechanical</span><span>$63–102K</span></div>
-        <div class="sc-row"><span>🏗 Civil</span><span>$75–115K</span></div>
-        <div class="sc-row"><span>⚡ Electrical</span><span>$70–164K</span></div>
-        <div class="sc-row"><span>🧪 Chemical</span><span>$91–162K</span></div>
-        <div class="sc-row"><span>✈ Aerospace</span><span>$85–124K</span></div>
-        <div class="sc-row"><span>💻 Software</span><span>$85–150K+</span></div>
+        <div class="sc-row"><span>⚙ Mechanical</span><span>$62–151K</span></div>
+        <div class="sc-row"><span>🏗 Civil</span><span>$54–154K</span></div>
+        <div class="sc-row"><span>⚡ Electrical</span><span>$77–164K</span></div>
+        <div class="sc-row"><span>🧪 Chemical</span><span>$57–160K</span></div>
+        <div class="sc-row"><span>✈ Aerospace</span><span>$93–148K</span></div>
+        <div class="sc-row"><span>💻 Software</span><span>$70–200K+</span></div>
         <div style="font-size:11px; color:var(--text-3); margin-top:0.3rem;">Canadian averages, 2025. Entry to mid-career.</div>
       </div>
     </div>
