@@ -149,16 +149,20 @@
   .tag-chem { background: var(--purple-bg); color: var(--purple-text); }
   .tag-tool { background: var(--amber-bg); color: var(--amber-text); }
 
-  /* BOOK GRID — 4 columns */
-  .book-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.7rem; }
-  .book-card { background: rgba(0,0,0,0.018); border: 1px solid var(--border); border-radius: 14px; padding: 4px; }
-  .book-inner { background: var(--card); border-radius: 11px; padding: 1.1rem 1.2rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.9); height: 100%; }
-  .bc-title { font-size: 13.5px; font-weight: 500; color: var(--text); line-height: 1.4; margin-bottom: 0.2rem; }
-  .bc-author { font-size: 12px; color: var(--text-3); margin-bottom: 0.5rem; }
-  .bc-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
-
-  .footer-note { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 0 10px 10px 0; padding: 1rem 1.25rem; font-size: 13px; color: var(--text-2); line-height: 1.65; margin-top: 1rem; }
-  .footer-note strong { color: var(--text); font-weight: 500; }
+  /* TEXTBOOK TABLES */
+  .tb-section { margin-bottom: 1.5rem; }
+  .tb-disc-header { display: flex; align-items: center; gap: 10px; padding: 0.85rem 1.25rem; background: var(--dark-s); border: 1px solid var(--dark-b); border-radius: 12px 12px 0 0; }
+  .tb-disc-icon { font-size: 18px; }
+  .tb-disc-title { font-family: 'DM Serif Display', serif; font-size: 1rem; font-weight: 400; letter-spacing: -0.01em; color: #ede9e0; }
+  .tb-disc-body { border: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px; overflow: hidden; background: var(--card); box-shadow: inset 0 1px 0 rgba(255,255,255,0.9); }
+  .tb-item { display: grid; grid-template-columns: 155px 1fr; gap: 0 1.25rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); align-items: start; }
+  .tb-item:last-child { border-bottom: none; }
+  .tb-course-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-3); padding-top: 2px; line-height: 1.4; }
+  .tb-book-title { font-size: 13.5px; font-weight: 500; color: var(--text); margin-bottom: 0.2rem; line-height: 1.35; }
+  .tb-book-author { font-size: 12px; color: var(--green); margin-bottom: 0.35rem; }
+  .tb-book-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+  .tb-tip { font-size: 13px; color: var(--text-2); line-height: 1.65; background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 0 8px 8px 0; padding: 0.85rem 1rem; margin-top: 0.85rem; }
+  .tb-tip strong { color: var(--text); font-weight: 500; }
 
   /* REVEAL */
   [data-r] { opacity: 0; transform: translateY(16px); transition: opacity 0.6s var(--e2), transform 0.6s var(--e2); }
@@ -183,12 +187,12 @@
     .content-wrap { padding: 2rem 1.5rem 4rem; }
     .explore-grid { grid-template-columns: 1fr 1fr; }
     .resource-grid { grid-template-columns: 1fr; }
-    .book-grid { grid-template-columns: 1fr 1fr; }
+    .tb-item { grid-template-columns: 1fr; gap: 0.25rem 0; }
+    .tb-course-label { padding-top: 0; }
   }
 
   @media (max-width: 560px) {
     .explore-grid { grid-template-columns: 1fr; }
-    .book-grid { grid-template-columns: 1fr; }
   }
 
   footer { border-top: 1px solid var(--border); padding: 1.5rem 3rem; display: flex; justify-content: space-between; font-size: 12px; color: var(--text-3); }
@@ -211,7 +215,7 @@
   <div class="banner-inner">
     <div class="page-eyebrow">📚 Curated list</div>
     <h1>Resources that <em>actually</em> helped.</h1>
-    <p>No padding, no Google dump. Just the YouTube channels, websites, tools, and books I've found genuinely useful — organized by where you are in your engineering journey.</p>
+    <p>No padding, no Google dump. YouTube channels, textbooks, tools, and websites — organized by where you are in your engineering journey.</p>
   </div>
 </div>
 
@@ -220,7 +224,8 @@
   <a href="#youtube" class="pill">YouTube</a>
   <a href="#websites" class="pill">Websites</a>
   <a href="#tools" class="pill">Tools (CAD)</a>
-  <a href="#books" class="pill">Books</a>
+  <a href="#hs-textbooks" class="pill">Grade 12 books</a>
+  <a href="#uni-textbooks" class="pill">Uni textbooks</a>
 </div>
 
 <div class="divider"></div>
@@ -235,7 +240,7 @@
     </div>
     <p style="font-size:14px; color:var(--text-2); margin-bottom:1.25rem; max-width:640px; line-height:1.65;">Not sure if engineering is for you yet? Start here before anything else. These are low-commitment, high-value — great for building genuine curiosity before you pick a branch.</p>
     <div class="explore-banner">
-      <h3>Three to start with</h3>
+      <h3>Four to start with</h3>
       <p>Watch a few videos from each of these before committing to any branch. You'll start to notice which type of problem excites you.</p>
       <div class="explore-grid">
         <a href="https://www.youtube.com/@RealEngineering" target="_blank" class="explore-card"><div class="ec-name">Real Engineering</div><div class="ec-desc">Big-picture videos on how the world's infrastructure and machines work.</div></a>
@@ -253,20 +258,55 @@
       <h2>YouTube channels</h2>
     </div>
 
+    <p class="sub-label">High school math</p>
+    <div class="resource-grid">
+      <a href="https://www.youtube.com/@TheOrganicChemistryTutor" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">📐</div><div class="rc-body"><div class="rc-name">Organic Chemistry Tutor</div><div class="rc-desc">The gold standard for worked examples. Walks through hundreds of practice problems step by step — calculus, algebra, trig, chemistry equations. Also covers physics. Invaluable.</div></div><span class="rc-tag tag-all">All subjects</span></div></a>
+      <a href="https://www.youtube.com/@3blue1brown" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">🎨</div><div class="rc-body"><div class="rc-name">3Blue1Brown</div><div class="rc-desc">Grant Sanderson uses stunning visual animations to explain calculus, linear algebra, and differential equations. Not for cramming — for building real intuition about why math works.</div></div><span class="rc-tag tag-all">Intuition</span></div></a>
+      <a href="https://www.youtube.com/@ProfessorLeonard" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">🎓</div><div class="rc-body"><div class="rc-name">Professor Leonard</div><div class="rc-desc">Complete Calculus 1, 2, 3, and Differential Equations lecture series filmed in actual classroom settings. Each lecture is 1–3 hours. Students call this "the channel that got me through university calculus."</div></div><span class="rc-tag tag-all">Full courses</span></div></a>
+      <a href="https://www.youtube.com/@patrickjmt" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">⚡</div><div class="rc-body"><div class="rc-name">PatrickJMT</div><div class="rc-desc">Short, no-nonsense videos on specific calculus and algebra topics. Great when you need a 5-minute explanation before a problem set — focused and efficient.</div></div><span class="rc-tag tag-all">Quick hits</span></div></a>
+      <a href="https://www.youtube.com/@blackpenredpen" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">✏</div><div class="rc-body"><div class="rc-name">BlackPenRedPen</div><div class="rc-desc">Chaotic energy but incredibly effective. Solves calculus problems rapid-fire with commentary that sticks in your head. Particularly good for tricky integrals and derivatives.</div></div><span class="rc-tag tag-all">Practice</span></div></a>
+      <a href="https://www.youtube.com/@khanacademy" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">🏫</div><div class="rc-body"><div class="rc-name">Khan Academy</div><div class="rc-desc">Full structured courses in calculus, linear algebra, statistics, and more. Progress tracking, practice questions, and a clean interface. Best starting point if you're learning a topic completely from scratch.</div></div><span class="rc-tag tag-all">Structured</span></div></a>
+    </div>
+
+    <p class="sub-label">Physics</p>
+    <div class="resource-grid">
+      <a href="https://www.youtube.com/@veritasium" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">🔬</div><div class="rc-body"><div class="rc-name">Veritasium</div><div class="rc-desc">Derek Muller (PhD in physics education) challenges misconceptions with experiments and demos. Not a problem-solving channel — it's for building deep intuition about how the physical world works.</div></div><span class="rc-tag tag-all">Intuition</span></div></a>
+      <a href="https://www.youtube.com/@PhysicsGirl" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">⚛</div><div class="rc-body"><div class="rc-name">Physics Girl</div><div class="rc-desc">MIT physics grad Dianna Cowern explains concepts through everyday experiences. Fast-paced, enthusiastic, and genuinely entertaining — makes physics feel accessible and exciting.</div></div><span class="rc-tag tag-all">Conceptual</span></div></a>
+      <a href="https://www.youtube.com/@MinutePhysics" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">⏱</div><div class="rc-body"><div class="rc-name">MinutePhysics</div><div class="rc-desc">Explains physics ideas in under 2 minutes with simple stick-figure animations. Perfect for quick concept reviews before exams or getting a fast overview of an unfamiliar topic.</div></div><span class="rc-tag tag-all">Quick review</span></div></a>
+      <a href="https://www.youtube.com/@smartereveryday" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">🚀</div><div class="rc-body"><div class="rc-name">Smarter Every Day</div><div class="rc-desc">Destin Sandlin (engineer) uses high-speed cameras and demonstrations to explore flight, space, fluid dynamics, and more. Great for seeing physics in real-world action.</div></div><span class="rc-tag tag-all">Applied</span></div></a>
+      <a href="https://www.youtube.com/@crashcourse" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">💫</div><div class="rc-body"><div class="rc-name">Crash Course Physics</div><div class="rc-desc">Hank Green walks through an entire physics curriculum in ~50 episodes — mechanics, electricity, magnetism, waves, and modern physics. Good for getting the big picture fast.</div></div><span class="rc-tag tag-all">Full overview</span></div></a>
+    </div>
+
+    <p class="sub-label">Chemistry</p>
+    <div class="resource-grid">
+      <a href="https://www.youtube.com/@NileRed" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EEEDFE; color:#534AB7;">🧪</div><div class="rc-body"><div class="rc-name">NileRed</div><div class="rc-desc">Nigel Braun (McGill chemistry background) conducts incredible experiments — extracting gold from jewelry, making aerogel, turning styrofoam into cinnamon candy. Builds genuine fascination with chemistry.</div></div><span class="rc-tag tag-chem">Chem</span></div></a>
+      <a href="https://www.youtube.com/@crashcourse" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EEEDFE; color:#534AB7;">📚</div><div class="rc-body"><div class="rc-name">Crash Course Chemistry</div><div class="rc-desc">Hank Green covers the entire high school and intro university chemistry syllabus in ~50 episodes. Good structured overview of stoichiometry, equilibrium, thermochemistry, and organic chemistry.</div></div><span class="rc-tag tag-chem">Full course</span></div></a>
+      <a href="https://www.youtube.com/@periodicvideos" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EEEDFE; color:#534AB7;">⚗</div><div class="rc-body"><div class="rc-name">Periodic Videos</div><div class="rc-desc">Professor Martyn Poliakoff and the University of Nottingham team have a video on every element in the periodic table. 265M+ views for a reason — makes the periodic table genuinely interesting.</div></div><span class="rc-tag tag-chem">Elements</span></div></a>
+      <a href="https://www.youtube.com/@learncheme" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EEEDFE; color:#534AB7;">⚙</div><div class="rc-body"><div class="rc-name">LearnChemE</div><div class="rc-desc">Backed by professors at the University of Colorado Boulder. Covers thermodynamics, fluid mechanics, mass transfer, reactor design, and process control with screencasts and simulations.</div></div><span class="rc-tag tag-chem">Chem Eng</span></div></a>
+    </div>
+
     <p class="sub-label">Mechanical engineering</p>
     <div class="resource-grid">
-      <a href="https://www.youtube.com/@TheEfficientEngineer" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">⚙</div><div class="rc-body"><div class="rc-name">The Efficient Engineer</div><div class="rc-desc">Crisp, no-nonsense videos on stress analysis, material selection, and mechanical design. One of the clearest channels for core mech concepts.</div></div><span class="rc-tag tag-mech">Mech</span></div></a>
-      <a href="https://www.youtube.com/@Lesics" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">🎞</div><div class="rc-body"><div class="rc-name">Lesics</div><div class="rc-desc">Animation-heavy explanations of mechanical engineering concepts — automotive systems, thermal engineering, fluid dynamics. One of my personal favourites.</div></div><span class="rc-tag tag-mech">Mech</span></div></a>
-      <a href="https://www.youtube.com/@EngineeringExplained" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">🚗</div><div class="rc-body"><div class="rc-name">Engineering Explained</div><div class="rc-desc">Focuses on how cars and mechanical systems actually work. Good mix of accessible and technical — great if you're into automotive.</div></div><span class="rc-tag tag-mech">Mech</span></div></a>
+      <a href="https://www.youtube.com/@JeffHanson" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">👨‍🏫</div><div class="rc-body"><div class="rc-name">Jeff Hanson ⭐ Start here</div><div class="rc-desc">Engineering professor at Texas Tech who uploads complete lectures for Statics, Dynamics, Mechanics of Materials, and Thermodynamics. Widely considered the best free resource for first- and second-year mech/civil engineering.</div></div><span class="rc-tag tag-mech">Full lectures</span></div></a>
+      <a href="https://www.youtube.com/@TheEfficientEngineer" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">⚙</div><div class="rc-body"><div class="rc-name">The Efficient Engineer</div><div class="rc-desc">Crisp, no-nonsense videos on stress analysis, material selection, and mechanical design. One of the clearest channels for core mech concepts — concise and well-produced.</div></div><span class="rc-tag tag-mech">Mech</span></div></a>
+      <a href="https://www.youtube.com/@Lesics" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">🎞</div><div class="rc-body"><div class="rc-name">Lesics</div><div class="rc-desc">Animation-heavy explanations of mechanical engineering concepts — automotive systems, thermal engineering, fluid dynamics. One of my personal favourites — makes complex systems visually intuitive.</div></div><span class="rc-tag tag-mech">Mech</span></div></a>
+      <a href="https://www.youtube.com/@EngineeringExplained" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">🚗</div><div class="rc-body"><div class="rc-name">Engineering Explained</div><div class="rc-desc">Focuses on how cars and mechanical systems actually work. Good mix of accessible and technical — great if you're interested in automotive engineering.</div></div><span class="rc-tag tag-mech">Mech</span></div></a>
       <a href="https://www.youtube.com/@StuffMadeHere" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">🔧</div><div class="rc-body"><div class="rc-name">Stuff Made Here</div><div class="rc-desc">A mechanical engineer who builds wild real-world projects. Entertaining and genuinely teaches you how engineers think through hard problems.</div></div><span class="rc-tag tag-mech">Mech</span></div></a>
     </div>
 
-    <p class="sub-label">Other branches</p>
+    <p class="sub-label">Electrical engineering</p>
     <div class="resource-grid">
-      <a href="https://www.youtube.com/@PracticalEngineeringChannel" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3DE; color:#3B6D11;">🏗</div><div class="rc-body"><div class="rc-name">Practical Engineering</div><div class="rc-desc">Civil engineering through real infrastructure projects — bridges, dams, roads. Grady Hillhouse makes it genuinely interesting.</div></div><span class="rc-tag tag-civil">Civil</span></div></a>
-      <a href="https://www.youtube.com/@TheEngineeringMindset" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">⚡</div><div class="rc-body"><div class="rc-name">The Engineering Mindset</div><div class="rc-desc">Deep dives into electrical and mechanical systems — HVAC, circuits, fluid mechanics. Practical and no-fluff.</div></div><span class="rc-tag tag-all">Elec / Mech</span></div></a>
-      <a href="https://www.youtube.com/@NileRed" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EEEDFE; color:#534AB7;">🧪</div><div class="rc-body"><div class="rc-name">NileRed</div><div class="rc-desc">Chemical engineering and chemistry explained clearly and visually. Some of the best explanations of chemical processes on YouTube.</div></div><span class="rc-tag tag-chem">Chem Eng</span></div></a>
-      <a href="https://www.youtube.com/@RealEngineering" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">🌍</div><div class="rc-body"><div class="rc-name">Real Engineering</div><div class="rc-desc">Covers aerospace, renewable energy, infrastructure, and more with detailed storytelling. Good for understanding how engineering shapes the world.</div></div><span class="rc-tag tag-all">All branches</span></div></a>
+      <a href="https://www.youtube.com/@ElectroBOOM" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#FAEEDA; color:#854F0B;">⚡</div><div class="rc-body"><div class="rc-name">ElectroBOOM</div><div class="rc-desc">Mehdi Sadaghdar explains electronics through (intentionally) dangerous experiments. 5M+ subscribers. You'll learn about rectifiers, Tesla coils, and circuit design while being genuinely entertained.</div></div><span class="rc-tag tag-all">Electrical</span></div></a>
+      <a href="https://www.youtube.com/@EEVblog" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#FAEEDA; color:#854F0B;">🔌</div><div class="rc-body"><div class="rc-name">EEVblog</div><div class="rc-desc">Dave Jones reviews electronics, explains test equipment, and dives deep into circuit design. Unscripted, high-energy, and incredibly informative for anyone serious about electronics.</div></div><span class="rc-tag tag-all">Electrical</span></div></a>
+      <a href="https://www.youtube.com/@TheEngineeringMindset" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#FAEEDA; color:#854F0B;">🏭</div><div class="rc-body"><div class="rc-name">The Engineering Mindset</div><div class="rc-desc">Paul Evans uses beautiful animations to explain electrical engineering, HVAC, motors, and heat pumps. Very visual and beginner-friendly — great for real-world electrical and mechanical systems.</div></div><span class="rc-tag tag-all">Elec / Mech</span></div></a>
+    </div>
+
+    <p class="sub-label">Other branches and general inspiration</p>
+    <div class="resource-grid">
+      <a href="https://www.youtube.com/@PracticalEngineeringChannel" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3DE; color:#3B6D11;">🏗</div><div class="rc-body"><div class="rc-name">Practical Engineering</div><div class="rc-desc">Civil engineering through real infrastructure projects — bridges, dams, roads. Grady Hillhouse makes it genuinely interesting — one of the best channels for understanding what civil engineers actually do.</div></div><span class="rc-tag tag-civil">Civil</span></div></a>
+      <a href="https://www.youtube.com/@RealEngineering" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">🌍</div><div class="rc-body"><div class="rc-name">Real Engineering</div><div class="rc-desc">Covers aerospace, renewable energy, infrastructure, and more with detailed storytelling. Good for understanding how engineering shapes the world across disciplines.</div></div><span class="rc-tag tag-all">All branches</span></div></a>
+      <a href="https://www.youtube.com/@markreber" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">🛸</div><div class="rc-body"><div class="rc-name">Mark Rober</div><div class="rc-desc">Former NASA and Apple engineer who builds incredible projects. Not a study channel, but perfect for understanding what engineers actually build and why — genuinely inspiring.</div></div><span class="rc-tag tag-all">Inspiration</span></div></a>
+      <a href="https://ocw.mit.edu" target="_blank" class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">🎓</div><div class="rc-body"><div class="rc-name">MIT OpenCourseWare</div><div class="rc-desc">Full university lectures from MIT in mechanical, electrical, civil, chemical, and software engineering. Completely free — same content as the actual MIT courses. Use the YouTube channel or the website.</div></div><span class="rc-tag tag-all">All branches</span></div></a>
     </div>
   </div>
 
@@ -298,20 +338,119 @@
     </div>
   </div>
 
-  <!-- BOOKS -->
-  <div class="section-block" id="books" data-r>
+  <!-- GRADE 12 TEXTBOOKS -->
+  <div class="section-block" id="hs-textbooks" data-r>
     <div class="section-head">
-      <div class="section-head-icon" style="background:#EEEDFE; color:#534AB7;">📚</div>
-      <h2>Books</h2>
+      <div class="section-head-icon" style="background:#E6F1FB; color:#185FA5;">📘</div>
+      <h2>Grade 12 textbooks</h2>
     </div>
-    <p style="font-size:14px; color:var(--text-2); margin-bottom:1.25rem; max-width:640px; line-height:1.65;">Not textbooks. These are reads that will actually make you want to do engineering.</p>
-    <div class="book-grid">
-      <div class="book-card"><div class="book-inner"><div class="bc-title">Structures: Or Why Things Don't Fall Down</div><div class="bc-author">J.E. Gordon</div><div class="bc-desc">A surprisingly readable book on structural engineering and materials. Civil and mechanical students both benefit.</div></div></div>
-      <div class="book-card"><div class="book-inner"><div class="bc-title">Engineer to Win</div><div class="bc-author">Carroll Smith</div><div class="bc-desc">The engineering behind racing — metallurgy, fasteners, machining — written with a down-to-earth style. Great for mechanical-leaning students.</div></div></div>
-      <div class="book-card"><div class="book-inner"><div class="bc-title">How Things Work</div><div class="bc-author">Louis Bloomfield</div><div class="bc-desc">Explains the physics behind everyday objects and machines. Builds the kind of intuition that helps in first-year physics and engineering courses.</div></div></div>
-      <div class="book-card"><div class="book-inner"><div class="bc-title">The Art of Problem Solving (series)</div><div class="bc-author">Richard Rusczyk</div><div class="bc-desc">Not engineering-specific, but builds the mathematical thinking engineers use constantly. Useful if you want to strengthen your problem-solving foundation.</div></div></div>
+    <p style="font-size:14px; color:var(--text-2); margin-bottom:1.5rem; max-width:640px; line-height:1.65;">The four Ontario courses that matter most for engineering admissions — and the textbooks for each. The Nelson books are the provincial standard. Callan's are student-favourite supplements with 400+ fully solved practice problems per course.</p>
+
+    <p class="sub-label">Calculus &amp; Vectors (MCV4U)</p>
+    <div class="resource-grid">
+      <div class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">📘</div><div class="rc-body"><div class="rc-name">Nelson Calculus and Vectors 12</div><div class="rc-desc">The standard Ontario textbook. Covers limits, derivatives, curve sketching, optimization, exponential/trig derivatives, and full vector algebra — dot product, cross product, projections. Required reading.</div></div><span class="rc-tag tag-all">Standard</span></div></div>
+      <div class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#E6F1FB; color:#185FA5;">📓</div><div class="rc-body"><div class="rc-name">Callan's Grade 12 Calculus and Vectors</div><div class="rc-desc">Student-favourite supplement with over 400 problems and full step-by-step solutions covering all MCV4U units. Use alongside the Nelson text for extra practice before exams.</div></div><span class="rc-tag tag-all">Supplement</span></div></div>
     </div>
-    <div class="footer-note"><strong>A note from me:</strong> I haven't read everything on this list cover to cover — some I've just started, others were recommended to me. I'll update this page as I go deeper into each one over the summer.</div>
+
+    <p class="sub-label">Advanced Functions (MHF4U)</p>
+    <div class="resource-list">
+      <div class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EAF3EC; color:#2D6A4F;">📗</div><div class="rc-body"><div class="rc-name">Nelson Advanced Functions 12</div><div class="rc-desc">The Ontario standard. Covers polynomial, rational, trigonometric, exponential, and logarithmic functions in depth. Essential prep for university calculus — the foundation everything else builds on.</div></div><span class="rc-tag tag-mech">Standard</span></div></div>
+    </div>
+
+    <p class="sub-label">Physics (SPH4U)</p>
+    <div class="resource-grid">
+      <div class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#FAEEDA; color:#854F0B;">📙</div><div class="rc-body"><div class="rc-name">Nelson Physics 12</div><div class="rc-desc">The Ontario standard for Grade 12 physics. Covers dynamics, energy &amp; momentum, electric &amp; magnetic fields, wave nature of light, and modern physics — relativity and quantum.</div></div><span class="rc-tag tag-all">Standard</span></div></div>
+      <div class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#FAEEDA; color:#854F0B;">📓</div><div class="rc-body"><div class="rc-name">Callan's Grade 12 Physics</div><div class="rc-desc">Over 400 problems with full solutions. Great supplement for extra practice on dynamics, electromagnetism, and waves — the units that trip up most students before engineering.</div></div><span class="rc-tag tag-all">Supplement</span></div></div>
+    </div>
+
+    <p class="sub-label">Chemistry (SCH4U)</p>
+    <div class="resource-grid">
+      <div class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EEEDFE; color:#534AB7;">📔</div><div class="rc-body"><div class="rc-name">Nelson Chemistry 12</div><div class="rc-desc">The Ontario standard. Covers organic chemistry, structure &amp; properties, energy changes &amp; rates, equilibrium, and electrochemistry. Required for chemical engineering applicants — worth keeping even if chem isn't your main focus.</div></div><span class="rc-tag tag-chem">Standard</span></div></div>
+      <div class="rcard"><div class="rcard-inner"><div class="rc-badge" style="background:#EEEDFE; color:#534AB7;">📓</div><div class="rc-body"><div class="rc-name">Callan's Grade 12 Chemistry</div><div class="rc-desc">Over 400 problems with step-by-step solutions. Excellent for organic chemistry and equilibrium practice — the two hardest units for most Grade 12 students.</div></div><span class="rc-tag tag-chem">Supplement</span></div></div>
+    </div>
+  </div>
+
+  <!-- UNIVERSITY TEXTBOOKS -->
+  <div class="section-block" id="uni-textbooks" data-r>
+    <div class="section-head">
+      <div class="section-head-icon" style="background:#EAF3EC; color:#2D6A4F;">📚</div>
+      <h2>University engineering textbooks</h2>
+    </div>
+    <p style="font-size:14px; color:var(--text-2); margin-bottom:1.5rem; max-width:640px; line-height:1.65;">The textbooks you'll actually encounter in first- and second-year engineering at Canadian universities. Buying ahead gives you a serious head start — or at minimum, you'll know what's coming. University libraries carry most of these, so don't buy everything at once.</p>
+
+    <!-- MECHANICAL -->
+    <div class="tb-section">
+      <div class="tb-disc-header"><span class="tb-disc-icon">⚙</span><span class="tb-disc-title">Mechanical Engineering</span></div>
+      <div class="tb-disc-body">
+        <div class="tb-item"><div class="tb-course-label">Statics &amp; Dynamics</div><div><div class="tb-book-title">Engineering Mechanics: Statics &amp; Dynamics</div><div class="tb-book-author">Hibbeler (Pearson)</div><div class="tb-book-desc">The most widely used statics/dynamics text in North American engineering programs. Clear explanations, extensive problem sets, and strong conceptual foundation. You will almost certainly use this book.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Mechanics of Materials</div><div><div class="tb-book-title">Mechanics of Materials</div><div class="tb-book-author">Hibbeler (Pearson)</div><div class="tb-book-desc">Covers stress, strain, axial loading, torsion, bending, shear, and deflection. Essential for structural and machine design in every mechanical and civil program.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Thermodynamics</div><div><div class="tb-book-title">Thermodynamics: An Engineering Approach</div><div class="tb-book-author">Cengel &amp; Boles (McGraw-Hill)</div><div class="tb-book-desc">The most popular thermodynamics textbook worldwide. Friendly, self-instructive style with real-world engineering examples. Now in its 10th edition — used in mechanical and chemical programs alike.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Fluid Mechanics</div><div><div class="tb-book-title">Fundamentals of Fluid Mechanics</div><div class="tb-book-author">Munson, Young, Okiishi, Huebsch (Wiley)</div><div class="tb-book-desc">Straightforward and well-organized. Covers fluid statics, Bernoulli, control volume analysis, dimensional analysis, and turbomachinery. Standard in mechanical, civil, and chemical programs.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Machine Design</div><div><div class="tb-book-title">Shigley's Mechanical Engineering Design</div><div class="tb-book-author">Budynas &amp; Nisbett (McGraw-Hill)</div><div class="tb-book-desc">Known as "the machine design bible." Found on the desk of nearly every mechanical design engineer. Covers gears, bearings, springs, shafts, and bolted joints in comprehensive detail.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Materials Science</div><div><div class="tb-book-title">Materials Science and Engineering: An Introduction</div><div class="tb-book-author">Callister &amp; Rethwisch (Wiley)</div><div class="tb-book-desc">The standard intro to materials science — metals, ceramics, polymers, composites, and phase diagrams. Used across mechanical, civil, and chemical engineering programs.</div></div></div>
+      </div>
+    </div>
+
+    <!-- CIVIL -->
+    <div class="tb-section">
+      <div class="tb-disc-header"><span class="tb-disc-icon">🏗</span><span class="tb-disc-title">Civil Engineering</span></div>
+      <div class="tb-disc-body">
+        <div class="tb-item"><div class="tb-course-label">Statics &amp; MoM</div><div><div class="tb-book-title">Mechanics of Materials</div><div class="tb-book-author">Hibbeler (Pearson) or Gere (Cengage)</div><div class="tb-book-desc">Same foundation as mechanical — stress, strain, torsion, bending, deflection. Civil programs use either Hibbeler or Gere depending on the university.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Structural Analysis</div><div><div class="tb-book-title">Structural Analysis</div><div class="tb-book-author">Hibbeler (Pearson) or Kassimali (Cengage)</div><div class="tb-book-desc">Methods for analyzing beams, trusses, and frames. Essential for structural engineering — the course where structural design starts to feel real.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Geotechnical Eng.</div><div><div class="tb-book-title">Principles of Geotechnical Engineering</div><div class="tb-book-author">Das &amp; Sobhan (Cengage)</div><div class="tb-book-desc">The standard intro to soil mechanics — soil classification, compaction, permeability, consolidation, and shear strength. Required in every civil program.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Concrete Design</div><div><div class="tb-book-title">Design of Concrete Structures</div><div class="tb-book-author">Nilson, Darwin, Dolan (McGraw-Hill)</div><div class="tb-book-desc">Reinforced concrete design — beams, columns, slabs. Uses Canadian concrete design standards. Core upper-year civil text.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Steel Design</div><div><div class="tb-book-title">Structural Steel Design</div><div class="tb-book-author">McCormac &amp; Csernak (Pearson)</div><div class="tb-book-desc">Steel member design — tension, compression, beams, connections. Aligned with Canadian steel design codes used in practice.</div></div></div>
+      </div>
+    </div>
+
+    <!-- ELECTRICAL -->
+    <div class="tb-section">
+      <div class="tb-disc-header"><span class="tb-disc-icon">⚡</span><span class="tb-disc-title">Electrical Engineering</span></div>
+      <div class="tb-disc-body">
+        <div class="tb-item"><div class="tb-course-label">Circuit Analysis</div><div><div class="tb-book-title">Fundamentals of Electric Circuits</div><div class="tb-book-author">Alexander &amp; Sadiku (McGraw-Hill)</div><div class="tb-book-desc">The standard first-year circuits text. Covers KCL, KVL, nodal/mesh analysis, transient response, AC circuits, and Laplace transforms. Used at most Canadian universities.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Electronics</div><div><div class="tb-book-title">Microelectronic Circuits</div><div class="tb-book-author">Sedra &amp; Smith (Oxford)</div><div class="tb-book-desc">The bible of analog electronics. Covers diodes, BJTs, MOSFETs, amplifiers, and op-amps. Heavy but essential for anyone going into electronics or hardware engineering.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Signals &amp; Systems</div><div><div class="tb-book-title">Signals and Systems</div><div class="tb-book-author">Oppenheim, Willsky, Nawab (Pearson)</div><div class="tb-book-desc">The standard text for signal processing — Fourier series, transforms, sampling, and filter design. Dense but thorough.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Electromagnetics</div><div><div class="tb-book-title">Fundamentals of Applied Electromagnetics</div><div class="tb-book-author">Fawwaz Ulaby (Pearson)</div><div class="tb-book-desc">More accessible than most EM texts. Covers waves, transmission lines, and antennas with real-world applications — a gentler introduction to a typically difficult course.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Digital Logic</div><div><div class="tb-book-title">Digital Design</div><div class="tb-book-author">Mano &amp; Ciletti (Pearson)</div><div class="tb-book-desc">Boolean algebra, combinational and sequential circuits, VHDL/Verilog introduction. Standard digital logic text across electrical and computer engineering programs.</div></div></div>
+      </div>
+    </div>
+
+    <!-- CHEMICAL -->
+    <div class="tb-section">
+      <div class="tb-disc-header"><span class="tb-disc-icon">🧪</span><span class="tb-disc-title">Chemical Engineering</span></div>
+      <div class="tb-disc-body">
+        <div class="tb-item"><div class="tb-course-label">Mass &amp; Energy Balances</div><div><div class="tb-book-title">Elementary Principles of Chemical Processes</div><div class="tb-book-author">Felder, Rousseau, Bullard (Wiley)</div><div class="tb-book-desc">The first chemical engineering course — material and energy balances around chemical processes. Foundational for everything that follows in the program.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Thermodynamics</div><div><div class="tb-book-title">Thermodynamics: An Engineering Approach</div><div class="tb-book-author">Cengel &amp; Boles (McGraw-Hill)</div><div class="tb-book-desc">Same text as mechanical — chemical programs go deeper into mixtures, phase equilibrium, and chemical potential. One of the most-used engineering textbooks ever written.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Reaction Engineering</div><div><div class="tb-book-title">Elements of Chemical Reaction Engineering</div><div class="tb-book-author">Fogler (Pearson)</div><div class="tb-book-desc">The standard CRE text. Covers reactor design for batch, CSTR, and PFR systems. Well-written and comprehensive — used across Canadian chemical engineering programs.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Heat Transfer</div><div><div class="tb-book-title">Heat and Mass Transfer</div><div class="tb-book-author">Cengel &amp; Ghajar (McGraw-Hill)</div><div class="tb-book-desc">Conduction, convection, radiation, and heat exchangers. Uses the same accessible style as Cengel's thermodynamics book — a natural continuation.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Process Control</div><div><div class="tb-book-title">Process Dynamics and Control</div><div class="tb-book-author">Seborg, Edgar, Mellichamp, Doyle (Wiley)</div><div class="tb-book-desc">Feedback control, PID tuning, and process dynamics. The standard process control text in Canadian chemical engineering programs.</div></div></div>
+      </div>
+    </div>
+
+    <!-- SOFTWARE -->
+    <div class="tb-section">
+      <div class="tb-disc-header"><span class="tb-disc-icon">💻</span><span class="tb-disc-title">Software Engineering</span></div>
+      <div class="tb-disc-body">
+        <div class="tb-item"><div class="tb-course-label">Programming (C)</div><div><div class="tb-book-title">The C Programming Language</div><div class="tb-book-author">Kernighan &amp; Ritchie (Prentice Hall)</div><div class="tb-book-desc">Known as "K&R" — the definitive C programming book. Short, elegant, and foundational for understanding how computers work at a low level. Every software engineer should read this.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Programming (Python)</div><div><div class="tb-book-title">Introduction to Computation and Programming Using Python</div><div class="tb-book-author">Guttag (MIT Press)</div><div class="tb-book-desc">Used in MIT's intro CS course. Teaches computational thinking, not just syntax — a better foundation for engineering programming than most Python books.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Algorithms</div><div><div class="tb-book-title">Introduction to Algorithms (CLRS)</div><div class="tb-book-author">Cormen, Leiserson, Rivest, Stein (MIT Press)</div><div class="tb-book-desc">The algorithms bible. Heavy but comprehensive — every software engineer should own a copy. Used in data structures and algorithms courses at most Canadian engineering schools.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Operating Systems</div><div><div class="tb-book-title">Operating System Concepts</div><div class="tb-book-author">Silberschatz, Galvin, Gagne (Wiley)</div><div class="tb-book-desc">Known as the "dinosaur book." Covers processes, memory management, file systems, and concurrency — the core concepts of how operating systems work.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Discrete Math</div><div><div class="tb-book-title">Discrete Mathematics and Its Applications</div><div class="tb-book-author">Rosen (McGraw-Hill)</div><div class="tb-book-desc">Logic, proofs, combinatorics, graphs — the mathematical foundation of computer science. Used in first-year discrete math courses across Canadian software engineering programs.</div></div></div>
+      </div>
+    </div>
+
+    <!-- AEROSPACE -->
+    <div class="tb-section">
+      <div class="tb-disc-header"><span class="tb-disc-icon">✈</span><span class="tb-disc-title">Aerospace Engineering</span></div>
+      <div class="tb-disc-body">
+        <div class="tb-item"><div class="tb-course-label">Aerodynamics</div><div><div class="tb-book-title">Fundamentals of Aerodynamics</div><div class="tb-book-author">Anderson (McGraw-Hill)</div><div class="tb-book-desc">The standard intro to aerodynamics — incompressible and compressible flow, airfoil theory, and wing design. The foundational aerospace text used in most programs.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Flight Mechanics</div><div><div class="tb-book-title">Introduction to Flight</div><div class="tb-book-author">Anderson (McGraw-Hill)</div><div class="tb-book-desc">Covers aircraft performance, stability, and control. More accessible than Anderson's aerodynamics text — a good starting point for anyone seriously interested in aerospace.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Orbital Mechanics</div><div><div class="tb-book-title">Fundamentals of Astrodynamics</div><div class="tb-book-author">Bate, Mueller, White (Dover)</div><div class="tb-book-desc">Classic, inexpensive Dover paperback on orbital mechanics — the mathematics of spacecraft trajectories. Highly recommended if space interests you.</div></div></div>
+        <div class="tb-item"><div class="tb-course-label">Propulsion</div><div><div class="tb-book-title">Mechanics and Thermodynamics of Propulsion</div><div class="tb-book-author">Hill &amp; Peterson (Pearson)</div><div class="tb-book-desc">Covers jet engines, rocket propulsion, and gas turbines. The standard propulsion text in upper-year aerospace programs.</div></div></div>
+      </div>
+    </div>
+
+    <div class="tb-tip"><strong>Don't buy everything at once.</strong> University libraries carry most of these, and many professors post their own notes. If you want one to start with: Hibbeler's Statics for mechanical/civil, Cengel's Thermodynamics for mechanical/chemical, or K&R for software.</div>
   </div>
 
 </div>
